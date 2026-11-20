@@ -4,7 +4,7 @@ Notatki w pierwszej osobie, do odczytania. Numeracja zgodna ze slajdami. Limit: 
 
 ## Slajd 01. Analiza EEG z MNE-Python
 
-Zaczynam od celu: przez 90 minut przejdziemy cały tor od surowego zapisu do klasyfikatora, na jednym zbiorze i jednym uczestniku. Wykres po prawej to prawdziwe EEG z tego zbioru po filtracji 1–40 Hz. Zwracam uwagę, że sygnał wygląda jak szum, a my wydobędziemy z niego informację, czy osoba wyobraża sobie ręce, czy stopy. Zapytam salę: po czym byście to poznali, patrząc tylko na ten wykres? Odpowiedź poznamy na slajdzie 22. Omawiam trzy cele operacyjne ze slajdu.
+Zaczynam od pytania badawczego: czy z krótkiego fragmentu EEG da się przewidzieć, czy osoba otrzymała polecenie wyobrażenia ruchu obu rąk, czy obu stóp? Klasyfikator uczy się przypisywać takim fragmentom znane etykiety. Pokażę cały tor analizy na jednej osobie. Wykres po prawej to prawdziwe EEG z tego zbioru po filtracji 1–40 Hz. Zwracam uwagę, że sygnał wygląda jak szum, a my wydobędziemy z niego informację, czy osoba wyobraża sobie ręce, czy stopy. Zapytam salę: po czym byście to poznali, patrząc tylko na ten wykres? Odpowiedź poznamy na slajdzie 22. Omawiam trzy cele operacyjne ze slajdu.
 
 ## Slajd 02. Pipeline analizy EEG
 
@@ -80,11 +80,11 @@ ICA rozdziela mieszaniny EEG na składowe o przybliżonej niezależności statys
 
 ## Slajd 20. Uśrednianie EEG
 
-Średnia po próbach daje Evoked. Rytmy ruchowe nie mają stałej fazy względem wskazówki, więc przy uśrednianiu się znoszą. Lewy wykres: szare pojedyncze epoki C3 i średnia dla warunku ręce, bliska zeru. Prawy: średnie dla obu klas praktycznie się nie różnią. Wniosek: analiza potencjałów wywołanych nie jest odpowiednia dla wyobrażania ruchu; potrzebujemy mocy w pasmach, czyli analizy czasowo-częstotliwościowej [9]. Mamy 21 i 23 epoki w klasach.
+Średnia po próbach daje Evoked. Rytmy ruchowe nie mają stałej fazy względem wskazówki, więc przy uśrednianiu się znoszą. Lewy wykres: szare pojedyncze epoki C3 i średnia dla warunku ręce, bliska zeru. Prawy: średnie dla obu klas praktycznie się nie różnią. Wniosek: samo uśrednienie potencjałów nie wystarcza tutaj do uchwycenia zmian rytmów niewyrównanych fazowo; dlatego dodatkowo badamy moc w pasmach, czyli analizę czasowo-częstotliwościową [9]. Mamy 21 i 23 epoki w klasach.
 
 ## Slajd 21. Analiza czasowo-częstotliwościowa
 
-Transformacja Morleta z liczbą cykli równą połowie częstotliwości daje kompromis między rozdzielczością czasu i częstotliwości. Wynik ma kształt 64 kanały, 30 częstotliwości, 481 punktów czasu po decymacji. Spektrogram C3: dla warunku ręce po wskazówce wyraźnie słabnie pas około 12 Hz, dla stóp pozostaje silny. Skala w decybelach pokazuje moc bezwzględną. To jeszcze nie jest ERD, bo brakuje odniesienia do okresu bazowego [10].
+Transformacja Morleta z liczbą cykli równą połowie częstotliwości daje kompromis między rozdzielczością czasu i częstotliwości. Wynik ma kształt 64 kanały, 30 częstotliwości, 481 punktów czasu po decymacji. Spektrogram C3: dla warunku ręce po wskazówce wyraźnie słabnie pas około 12 Hz, dla stóp pozostaje silny. Jeśli pokazujemy skalę dB mocy, musimy podać jej poziom odniesienia; decybel sam w sobie jest miarą względną. W tym kroku nie stosujemy jeszcze normalizacji do okresu bazowego. To jeszcze nie jest ERD, bo brakuje odniesienia do okresu bazowego [10].
 
 ## Slajd 22. Normalizacja i ERD/ERS
 
@@ -108,7 +108,7 @@ Budujemy macierz X o wymiarach 44 próby, 64 kanały, 480 próbek, bo klasyfikuj
 
 ## Slajd 27. Klasyfikator CSP + LDA
 
-Klasyfikator to model przewidujący kategorię zadania z krótkiego fragmentu EEG. Tu rozpoznaje, czy badany wyobrażał sobie ruch obu rąk, czy obu stóp. Robimy to, by sprawdzić, czy rytmy sensomotoryczne zawierają informację pozwalającą odróżniać te stany. CSP uczy się przestrzennych filtrów maksymalizujących różnicę wariancji klas i tworzy cztery cechy (logarytmy wariancji); LDA wyznacza granicę decyzji. W walidacji oba kroki uczymy wyłącznie na dwóch biegach i sprawdzamy na trzecim. Nie diagnozujemy osoby ani nie odczytujemy intencji poza tym eksperymentem. Regularyzacja Ledoit–Wolf stabilizuje szacowanie kowariancji [13].
+Wyjaśniam, czym jest klasyfikator: to model nadzorowany, który uczy się na oznaczonych przykładach i przypisuje nowej epoce EEG jedną z dwóch etykiet. Tutaj przewiduje warunek zadania: wskazówkę wyobrażenia ruchu obu rąk albo obu stóp. Po co go tworzymy? Aby sprawdzić, czy EEG zawiera informację predykcyjną, a nie tylko różnice średnich przebiegów. CSP uczy się przestrzennych filtrów maksymalizujących różnicę wariancji klas i tworzy cztery cechy (logarytmy wariancji); LDA wyznacza granicę decyzji. W każdym podziale uczymy obydwa kroki od nowa na dwóch biegach i oceniamy na trzecim; wspólny próg QC jest jednak wyznaczony wcześniej na całym zbiorze. Nie diagnozujemy osoby ani nie odczytujemy intencji poza tym eksperymentem. Regularyzacja Ledoit–Wolf stabilizuje szacowanie kowariancji [13].
 
 ## Slajd 28. Walidacja modelu
 
@@ -128,5 +128,5 @@ Zapisuję epoki do formatu FIF, a wyniki i wersje oprogramowania do JSON. To min
 
 ## Slajd 32. Podsumowanie i zadanie praktyczne
 
-Skrypt run_subject wykonuje cały tor dla wybranej osoby i daje wynik 0,976 dla uczestnika 1, zgodny z tym, co oglądaliśmy. Zadanie dla studentów: po pierwsze uruchomić dla subject=2, po drugie wytrenować na osobie 1 i przetestować na osobie 2, po trzecie porównać wyniki. Parametry, jak okno czy pasma, wybierają bez użycia zbioru testowego. Ograniczenia: jedna osoba, 44 epoki, parametry ustalone a priori. Dziękuję; pytania.
+Skrypt run_subject wykonuje cały tor dla wybranej osoby i daje wynik 0,976 dla uczestnika 1, zgodny z tym, co oglądaliśmy. Zadanie dla studentów: po pierwsze uruchomić dla subject=2, po drugie wytrenować na osobie 1 i przetestować na osobie 2, po trzecie porównać wyniki. Parametry, jak okno czy pasma, wybierają bez użycia zbioru testowego; również kontrola jakości nie powinna wykorzystywać danych testowych do ustalania progu. Ograniczenia: jedna osoba, 44 epoki, parametry ustalone a priori. Dziękuję; pytania.
 
