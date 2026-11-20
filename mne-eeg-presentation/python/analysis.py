@@ -95,6 +95,7 @@ def evaluate(X, y, groups, n_splits=3):
     base = cross_val_predict(DummyClassifier(strategy="most_frequent"), X, y, groups=groups, cv=cv)
     return dict(
         bal_acc=float(balanced_accuracy_score(y, y_hat)),
+        protocol="all_task_epochs_groupkfold_v2",
         folds=[float(f) for f in folds],
         balanced_accuracy_mean_folds=float(np.mean(folds)),
         evaluation_scope="all task epochs; GroupKFold by run, one subject; exploratory TFR QC does not select ML epochs",
