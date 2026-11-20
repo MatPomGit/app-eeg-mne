@@ -33,7 +33,8 @@ class ScientificNotebookTests(unittest.TestCase):
         self.assertIn("auc_fold.mean()", code)
         self.assertIn("roc_auc_fold_mean", code)
         self.assertIn("transdukcyjn", prose.lower())
-        self.assertIn("Czym jest klasyfikator", prose)
+        self.assertIn("uczymy regresję logistyczną", prose)
+        self.assertIn("Każda predykcja pochodzi od klasyfikatora", prose)
         for cell in nb["cells"]:
             if cell["cell_type"] == "code":
                 ast.parse("".join(cell["source"]))
