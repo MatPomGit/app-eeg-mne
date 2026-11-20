@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8fc">
+  <meta name="description" content="Materiały dydaktyczne EEG i MNE-Python: potencjał P3 w paradygmacie oddball oraz klasyfikacja wyobrażania ruchu metodą CSP–LDA.">
+  <title>EEG z MNE-Python | Analiza sygnału i klasyfikacja</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./" aria-label="EEG z MNE-Python, strona główna">
+        <svg class="brand-icon" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <rect width="34" height="34" rx="10" fill="#e6eeff"/>
+          <path d="M3 18h6l3-8 5 15 4-10 2 3h8" fill="none" stroke="#285bcc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>EEG <span class="brand-muted">/ MNE-Python</span></span>
+      </a>
+      <nav class="nav" aria-label="Nawigacja główna">
+        <a href="#analizy">Analizy</a>
+        <a href="#metoda">Metoda</a>
+        <a href="#materialy">Materiały</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Materiały dydaktyczne i kod źródłowy</p>
+          <h1 id="hero-title">Od sygnału EEG do <span>analizy i klasyfikacji</span></h1>
+          <p class="lead">Dwa niezależne eksperymenty pokazują, jak przygotować elektroencefalogram, wyznaczyć cechy sygnału i ocenić model uczenia maszynowego w MNE-Python.</p>
+          <div class="actions">
+            <a class="button button-primary" href="#analizy">Poznaj eksperymenty <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="https://github.com/MatPomGit/app-eeg-mne">Repozytorium GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="hero-note">Python · MNE · Jupyter · EEG · klasyfikacja nadzorowana</p>
+        </div>
+        <div class="signal-card">
+          <div class="signal-header"><span class="signal-light"></span> Schemat przebiegów EEG <span class="signal-label">ILUSTRACJA</span></div>
+          <svg class="signal-graphic" viewBox="0 0 520 292" role="img" aria-labelledby="signal-title signal-desc">
+            <title id="signal-title">Trzy stylizowane przebiegi EEG</title>
+            <desc id="signal-desc">Ilustracja schematyczna o trzech kanałach, nie przedstawia rzeczywistych danych pomiarowych.</desc>
+            <defs>
+              <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" fill="none" stroke="#dce7f2" stroke-width="1"/></pattern>
+              <linearGradient id="filltrace" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#396bd7"/><stop offset="100%" stop-color="#23a7ae"/></linearGradient>
+            </defs>
+            <rect x="58" y="20" width="432" height="232" rx="10" fill="url(#grid)"/>
+            <g font-family="system-ui, sans-serif" font-size="13" fill="#728397" text-anchor="end">
+              <text x="46" y="75">C3</text><text x="46" y="150">Cz</text><text x="46" y="226">C4</text>
+            </g>
+            <path d="M62 72 L76 72 84 69 93 78 101 57 108 92 118 68 127 74 140 71 148 63 158 83 169 57 179 84 191 70 206 74 219 66 229 78 239 70 249 73 262 72 270 61 281 86 291 58 302 88 311 66 324 74 334 72 349 68 359 80 368 63 378 78 391 70 406 72 416 62 427 82 438 69 453 73 465 68 476 74 487 72" stroke="url(#filltrace)" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M62 147 L76 146 85 150 92 138 100 156 111 132 119 163 129 142 140 149 153 147 161 136 170 159 182 139 191 153 203 144 215 149 224 145 236 147 245 136 253 158 264 141 276 149 286 145 298 146 306 135 317 161 326 140 337 152 350 147 362 147 372 138 382 155 391 139 400 153 412 144 422 151 435 145 445 148 458 141 469 154 481 145 487 147" stroke="#55b3b8" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M62 222 L76 222 85 216 96 231 105 213 114 234 125 216 136 225 146 220 158 221 168 212 177 231 190 214 200 229 211 220 224 223 234 214 246 230 255 216 268 222 280 221 291 214 302 229 313 219 325 223 337 216 348 231 360 214 371 229 382 220 394 222 408 219 419 226 432 214 443 228 454 219 464 222 476 217 487 222" stroke="#778dbb" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="#728397" font-size="11" font-family="system-ui, sans-serif"><text x="62" y="273">Przykładowy przebieg w czasie →</text></g>
+          </svg>
+          <p class="signal-footnote">Ilustracja poglądowa. Dane i wyniki eksperymentów znajdują się w notatnikach.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="analizy" aria-labelledby="analizy-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Dwa odrębne protokoły</p>
+          <h2 id="analizy-title">Co analizujemy?</h2>
+          <p>Oba ćwiczenia korzystają z EEG, ale dotyczą różnych zadań eksperymentalnych i różnych sposobów walidacji.</p>
+        </div>
+        <div class="study-grid">
+          <article class="study-card">
+            <span class="study-number">01 <span class="study-tag">Potencjały wywołane</span></span>
+            <h3>Oddball i potencjał P3</h3>
+            <p class="card-lead">Czy na podstawie EEG można rozróżnić reakcję na bodziec docelowy i niedocelowy?</p>
+            <dl class="study-facts">
+              <div><dt>Dane</dt><dd>ERP CORE, zadanie P3</dd></div>
+              <div><dt>Model</dt><dd>Regresja logistyczna</dd></div>
+              <div><dt>Klasy</dt><dd>Bodziec docelowy / niedocelowy</dd></div>
+              <div><dt>Walidacja</dt><dd>Podział według uczestników; ograniczenia przetwarzania transdukcyjnego</dd></div>
+            </dl>
+            <a class="text-link" href="https://github.com/MatPomGit/app-eeg-mne/blob/main/notebook/eeg_P3_ERP_1.6.4.ipynb">Otwórz notatnik P3 <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="study-card">
+            <span class="study-number">02 <span class="study-tag">Wyobrażanie ruchu</span></span>
+            <h3>Ręce czy stopy? CSP + LDA</h3>
+            <p class="card-lead">Czy wzorzec aktywności EEG pozwala odróżnić wyobrażanie ruchu obu rąk od ruchu obu stóp?</p>
+            <dl class="study-facts">
+              <div><dt>Dane</dt><dd>PhysioNet EEGBCI</dd></div>
+              <div><dt>Model</dt><dd>Filtry CSP i klasyfikator LDA</dd></div>
+              <div><dt>Klasy</dt><dd>Wyobrażanie obu rąk / obu stóp</dd></div>
+              <div><dt>Walidacja</dt><dd>Według biegów eksperymentu tej samej osoby</dd></div>
+            </dl>
+            <a class="text-link" href="https://github.com/MatPomGit/app-eeg-mne/blob/main/mne-eeg-presentation/notebooks/mne_eeg_workshop.ipynb">Otwórz notatnik CSP–LDA <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+        <p class="study-disclaimer"><strong>Ważne:</strong> klasyfikacja dotyczy warunku eksperymentalnego. Wynik modelu nie jest diagnozą kliniczną ani dowodem odczytywania myśli. Walidacja między biegami jednej osoby nie oznacza skuteczności dla nowych uczestników.</p>
+      </div>
+    </section>
+
+    <section class="section section-tinted" id="metoda" aria-labelledby="metoda-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Metoda krok po kroku</p>
+          <h2 id="metoda-title">Czym jest klasyfikator EEG?</h2>
+          <p>To model uczony na przykładach EEG o znanych etykietach. Przekształca cechy sygnału w przewidywaną klasę, a jego przydatność ocenia się na danych niewykorzystanych do dopasowania modelu.</p>
+        </div>
+        <ol class="steps">
+          <li><span class="step-index">1</span><h3>Pobranie danych</h3><p>Wczytujemy EEG i informacje o zdarzeniach eksperymentalnych.</p></li>
+          <li><span class="step-index">2</span><h3>Przygotowanie sygnału</h3><p>Kontrolujemy jakość, stosujemy odpowiednie filtry i wyodrębniamy epoki.</p></li>
+          <li><span class="step-index">3</span><h3>Wyznaczenie cech</h3><p>Opisujemy odpowiedź ERP lub przestrzenne wzorce aktywności związanej z ruchem.</p></li>
+          <li><span class="step-index">4</span><h3>Uczenie i walidacja</h3><p>Dopasowujemy model na próbach uczących i sprawdzamy go na próbach testowych.</p></li>
+        </ol>
+        <div class="method-note">
+          <span class="method-icon" aria-hidden="true">i</span>
+          <p><strong>Dlaczego podział danych jest istotny?</strong> Ten sam uczestnik lub bieg może dostarczać podobnych epok. Protokół walidacji określa, czy wolno wnioskować o nowych próbach, nowych biegach czy nowych osobach. Nie należy utożsamiać tych scenariuszy.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="materialy" aria-labelledby="materialy-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Materiały do wykorzystania</p>
+          <h2 id="materialy-title">Przejdź do kodu i prezentacji</h2>
+          <p>Notatniki zawierają przebieg analiz i komentarze metodyczne. Pliki wynikowe należy interpretować w kontekście wersji protokołu opisanej w repozytorium.</p>
+        </div>
+        <div class="resource-grid">
+          <a class="resource" href="https://github.com/MatPomGit/app-eeg-mne/blob/main/notebook/eeg_P3_ERP_1.6.4.ipynb"><span class="resource-type">Jupyter · P3</span><strong>Notatnik ERP CORE</strong><span>Przygotowanie EEG, P3 i regresja logistyczna.</span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+          <a class="resource" href="https://github.com/MatPomGit/app-eeg-mne/blob/main/mne-eeg-presentation/notebooks/mne_eeg_workshop.ipynb"><span class="resource-type">Jupyter · CSP–LDA</span><strong>Notatnik wyobrażania ruchu</strong><span>Epoki, cechy, klasyfikator i walidacja między biegami.</span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+          <a class="resource" href="https://github.com/MatPomGit/app-eeg-mne/blob/main/mne-eeg-presentation/output/mne_eeg_32_slajdy.pdf"><span class="resource-type">PDF · 32 slajdy</span><strong>Prezentacja wykładowa</strong><span>Metody, kod, wykresy i interpretacja analizy EEGBCI.</span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+          <a class="resource" href="https://github.com/MatPomGit/app-eeg-mne/blob/main/mne-eeg-presentation/output/mne_eeg_32_slajdy_notes.pdf"><span class="resource-type">PDF · notatki</span><strong>Komentarz do prezentacji</strong><span>Objaśnienia kolejnych etapów analizy i ograniczeń.</span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>EEG / MNE-Python · materiały edukacyjne i demonstracje metod.</p>
+      <p><a href="https://github.com/MatPomGit/app-eeg-mne">Kod i dokumentacja</a> · <a href="https://github.com/MatPomGit/app-eeg-mne/blob/main/LICENSE">Licencja repozytorium</a></p>
+    </div>
+  </footer>
+</body>
+</html>
