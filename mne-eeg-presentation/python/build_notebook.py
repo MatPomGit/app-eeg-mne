@@ -29,6 +29,9 @@ for p in sorted((ROOT / "presentation" / "code").glob("s[0-9][0-9]*.py"), key=la
     cells.append(nbf.v4.new_markdown_cell(head))
     cells.append(nbf.v4.new_code_cell(p.read_text()))
 cells.append(nbf.v4.new_markdown_cell(DIDACTIC["__exercise__"]))
+# Stable notebook cell identifiers prevent gratuitous diffs on each rebuild.
+for i, cell in enumerate(cells):
+    cell["id"] = f"eeg-{i:03d}"
 nb.cells = cells
 nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
 out = ROOT / "notebooks" / "mne_eeg_workshop.ipynb"
