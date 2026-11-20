@@ -1,5 +1,5 @@
 epochs_clf = mne.Epochs(
-    raw_clf, epochs.events,
+    raw_clf, events,
     dict(hands=1, feet=2),
     tmin=-1.5, tmax=4.5, baseline=None,
     reject_by_annotation=False, preload=True)
