@@ -1,4 +1,14 @@
-# Raport końcowy
+# Raport walidacyjny EEG/MNE (v1.1.0, 2026-11-20)
+
+**Uwaga dotycząca wersji:** poniższe liczby odnoszą się do historycznego protokołu v1.0 (44 epoki po QC). Zmieniono metodologię klasyfikacji: obecnie dane ML pobiera się z pełnej listy znaczników zadania, a próg QC z całego zbioru wykorzystuje się tylko do opisowej analizy TFR. Dotychczasowe 0,976, macierz pomyłek i p=0,005 **nie są wynikami protokołu v2** i wymagają ponownego wyliczenia. Aktualne uruchomienie powinno zapisać `protocol=all_task_epochs_groupkfold_v2` oraz odtworzyć wynik z danych rzeczywistych. Do tego momentu pliki PDF i historyczne wyniki mogą być nieaktualne.
+
+## Kontrole regresji v1.1.0
+- Kod `analysis.make_epochs()` tworzy oddzielne epoki ML na podstawie pełnej listy `events`, przed selekcją TFR.
+- `GroupKFold` dopasowuje oba kroki CSP i LDA tylko na częściach treningowych.
+- Generator notatnika korzysta z kanonicznych opisów w `notes/notebook_guides.json`.
+- Dodano testy regresji braku przecieku QC i zgodności komórek kodu z fragmentami slajdów.
+
+## Historyczny raport v1.0 (wyniki nieaktualne dla bieżącej metody)
 
 ## Środowisko (rzeczywiste wersje)
 Python 3.12.3, MNE 1.13.2, NumPy 2.5.4, SciPy 1.18.1, Matplotlib 3.11.2, scikit-learn 1.9.1, pandas 3.0.6,
