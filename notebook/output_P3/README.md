@@ -1,10 +1,8 @@
-> **Wyniki historyczne (pipeline 1.6.4).** Po korektach metodologicznych 1.6.5 wymagają ponownego wyliczenia. Nie traktuj zapisanych wartości testów i klasyfikatora jako zweryfikowanych w nowej wersji. Zobacz [`../CHANGELOG.md`](../CHANGELOG.md).
-
 # Dane wynikowe analizy P3
 
 - `sub-001_task-P3_ave.fif`: trzy obiekty Evoked pierwszej osoby: target, nontarget, target-minus-nontarget; amplitudy w V.
 - `group_task-P3_ave.fif`: średnia po uczestnikach (równa waga osoby) dla obu warunków i różnicy; amplitudy w V.
-- `participants_P3.csv`: jeden wiersz na osobę; liczby epok przed/po QC, próg odrzucenia [µV], składowe i zbieżność ICA, liczby prób i średnie P3 [µV].
+- `participants_P3.csv`: jeden wiersz na osobę; liczby epok przed/po QC, próg odrzucenia [µV], składowe i zbieżność ICA, liczby odrzuceń w klasach i średnie P3 [µV].
 - `results.json`: parametry pipeline, wersje oprogramowania, test grupowy i metryki walidacji, o ile możliwe.
 
 Wykresy pojawiają się w notatniku; nie są automatycznie zapisywane jako obrazy PNG. Surowe dane BIDS nie są kopiowane do katalogu wyników.
