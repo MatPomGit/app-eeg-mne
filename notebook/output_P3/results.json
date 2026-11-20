@@ -47,18 +47,18 @@
   "reference": "mean(P9,P10)",
   "erp_filter_hz": [
     0.1,
-    30.0
+    30
   ],
   "ica_all_subjects_converged": false,
   "ica_filter_hz": [
-    1.0,
-    30.0
+    1,
+    30
   ],
   "group_mean_p3_difference_uV": 6.262,
   "group_test": {
     "t": 7.799934007687464,
     "df": 29,
-    "p": 1.3326523244016184e-08,
+    "p": 1.3326523244016184e-8,
     "cohen_dz": 1.4240666010206995,
     "ci_95_uV": [
       4.6200965301504935,
@@ -85,5 +85,8 @@
     "mne_bids": "0.18.0",
     "numpy": "2.5.5",
     "scikit_learn": "1.9.1"
-  }
+  },
+  "pipeline_version": "1.6.4",
+  "provenance_status": "historical_pre_methodology_corrections",
+  "provenance_note": "Metrics have not been recomputed under methodology version 1.6.5. Rerun the entire notebook to replace these outputs."
 }
