@@ -129,3 +129,4 @@ Zapisuję epoki używane do klasyfikacji i wynik bieżącej walidacji do plików
 ## Slajd 32. Podsumowanie i zadanie praktyczne
 
 Podsumowuję logikę analizy: od surowego EEG przez czasowo-częstotliwościowy opis rytmów do modelu CSP + LDA, który odróżnia dwie etykiety zadania. Klasyfikator trenujemy osobno na każdym podziale walidacji między biegami. Proszę uruchomić ten sam protokół dla uczestnika 2, a następnie rozważyć odrębne badanie transferu S1 → S2: wszystkie uczone kroki trzeba wówczas dopasować bez dostępu do danych S2. Nie porównujemy wyników bez sprawdzenia, czy dotyczą identycznego doboru epok i metryk.
+
