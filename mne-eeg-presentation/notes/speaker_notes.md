@@ -72,11 +72,11 @@ Epoki obejmują okno od −1,5 do 4,5 s względem wskazówki. Rozszerzyłem je w
 
 ## Slajd 18. Kontrola jakości
 
-Plan sugerował próg 200 µV. Sprawdziłem go na danych: odrzuciłby 43 z 45 epok, więc jest bezużyteczny dla filtrowanego zakresu 1–40 Hz. Dlatego używamy progu odpornego: mediana plus trzy skalowane odchylenia MAD, bez użycia etykiet klas. Wynosi 722 µV i odrzuca jedną epokę. Wniosek dydaktyczny: kryteria automatyczne trzeba kalibrować na danych i raportować ich skutek. Ograniczenie: próg liczymy na całym zbiorze, ale nie używa on etykiet, więc nie powoduje wycieku.
+Plan sugerował próg 200 µV. Sprawdziłem go na danych: odrzuciłby 43 z 45 epok, więc jest bezużyteczny dla filtrowanego zakresu 1–40 Hz. Dlatego używamy progu odpornego: mediana plus trzy skalowane odchylenia MAD, bez użycia etykiet klas. Wynosi 722 µV i odrzuca jedną epokę. Wniosek dydaktyczny: kryteria automatyczne trzeba kalibrować na danych i raportować ich skutek. Ograniczenie: próg jest obliczany na całym zapisie, również na biegu testowym. To niesuperwizowane, transdukcyjne przygotowanie danych; nie można twierdzić, że cały pipeline jest wolny od wpływu danych testowych. Dla ścisłej walidacji end-to-end próg ustalmy wcześniej lub w zbiorze treningowym.
 
 ## Slajd 19. Independent Component Analysis
 
-ICA rozkłada sygnał na niezależne źródła statystyczne. Dopasowuję 20 składowych na danych 1–40 Hz. Procedura find_bads_eog koreluje składowe z kanałem Fp1 jako zastępczym EOG i wskazuje kandydata: składową 0, o czołowej topografii. To jest identyfikacja, nie decyzja. Nie usuwam jej, bo nie mamy kanału EOG ani potwierdzenia przebiegu; ica.exclude pozostaje puste. Pytanie: czemu nietypowa topografia nie musi oznaczać artefaktu?
+ICA rozdziela mieszaniny EEG na składowe o przybliżonej niezależności statystycznej; nie identyfikuje automatycznie anatomicznych źródeł. Dopasowuję 20 składowych na danych 1–40 Hz. Procedura find_bads_eog koreluje składowe z kanałem Fp1 jako zastępczym EOG i wskazuje kandydata: składową 0, o czołowej topografii. To jest identyfikacja, nie decyzja. Nie usuwam jej, bo nie mamy kanału EOG ani potwierdzenia przebiegu; ica.exclude pozostaje puste. Pytanie: czemu nietypowa topografia nie musi oznaczać artefaktu?
 
 ## Slajd 20. Uśrednianie EEG
 
@@ -108,11 +108,11 @@ Budujemy macierz X o wymiarach 44 próby, 64 kanały, 480 próbek, bo klasyfikuj
 
 ## Slajd 27. Klasyfikator CSP + LDA
 
-Pipeline scikit-learn łączy CSP i LDA, dzięki czemu przy walidacji krzyżowej CSP jest dopasowywane tylko na zbiorze treningowym każdego foldu. To eliminuje przeciek informacji, czyli sytuację, w której filtry zna zbiór testowy. Używam czterech składowych i regularyzacji Ledoit–Wolf [13], bo po średniej referencji kowariancja jest osobliwa. Wynik: dwa kroki, csp i lineardiscriminantanalysis. Pytanie: co by się stało, gdybym dopasował CSP na całym zbiorze przed walidacją?
+Klasyfikator to model przewidujący kategorię zadania z krótkiego fragmentu EEG. Tu rozpoznaje, czy badany wyobrażał sobie ruch obu rąk, czy obu stóp. Robimy to, by sprawdzić, czy rytmy sensomotoryczne zawierają informację pozwalającą odróżniać te stany. CSP uczy się przestrzennych filtrów maksymalizujących różnicę wariancji klas i tworzy cztery cechy (logarytmy wariancji); LDA wyznacza granicę decyzji. W walidacji oba kroki uczymy wyłącznie na dwóch biegach i sprawdzamy na trzecim. Nie diagnozujemy osoby ani nie odczytujemy intencji poza tym eksperymentem. Regularyzacja Ledoit–Wolf stabilizuje szacowanie kowariancji [13].
 
 ## Slajd 28. Walidacja modelu
 
-GroupKFold dzieli epoki według biegów: trening na dwóch biegach, test na trzecim. Wyniki po przebiegach to 0,93, 1,0 i 1,0; losowy podział daje 0,88, 0,93 i 1,0. Wbrew oczekiwaniom losowy podział nie zawyżył tu wyniku; różnice mieszczą się w szumie przy 44 próbach [14]. Nadal zalecam podział według biegów, bo epoki z jednej sesji są skorelowane i w innych zbiorach losowy podział zawyża wyniki. Nie oceniamy generalizacji na nowe osoby.
+GroupKFold dzieli epoki według biegów: trening na dwóch biegach, test na trzecim. Wyniki z historycznego wykonania po biegach to 0,93, 1,0 i 1,0; losowy podział dał 0,88, 0,93 i 1,0 (liczby trzeba potwierdzić po ponownym wykonaniu). Wbrew oczekiwaniom losowy podział nie zawyżył tu wyniku; różnice mieszczą się w szumie przy 44 próbach [14]. Nadal zalecam podział według biegów, bo epoki z jednej sesji są skorelowane i w innych zbiorach losowy podział zawyża wyniki. Nie oceniamy generalizacji na nowe osoby.
 
 ## Slajd 29. Ocena jakości klasyfikacji
 
