@@ -72,7 +72,7 @@ Epoki obejmują okno od −1,5 do 4,5 s względem wskazówki. Rozszerzyłem je w
 
 ## Slajd 18. Kontrola jakości
 
-Plan sugerował próg 200 µV. Sprawdziłem go na danych: odrzuciłby 43 z 45 epok, więc jest bezużyteczny dla filtrowanego zakresu 1–40 Hz. Dlatego używamy progu odpornego: mediana plus trzy skalowane odchylenia MAD, bez użycia etykiet klas. Wynosi 722 µV i odrzuca jedną epokę. Wniosek dydaktyczny: kryteria automatyczne trzeba kalibrować na danych i raportować ich skutek. Ograniczenie: próg liczymy na całym zbiorze, ale nie używa on etykiet, więc nie powoduje wycieku.
+Plan sugerował próg 200 µV. Sprawdziłem go na danych: odrzuciłby 43 z 45 epok, więc jest bezużyteczny dla filtrowanego zakresu 1–40 Hz. Dlatego używamy progu odpornego: mediana plus trzy skalowane odchylenia MAD, bez użycia etykiet klas. Wynosi 722 µV i odrzuca jedną epokę. Wniosek dydaktyczny: kryteria automatyczne trzeba kalibrować na danych i raportować ich skutek. Ograniczenie: próg wyznaczamy na wszystkich epokach przed walidacją; mimo braku etykiet wykorzystuje to rozkład sygnału także w grupach testowych. Jest to krok transdukcyjny i nie uprawnia do twierdzenia o pełnej niezależności preprocessingu od danych testowych.
 
 ## Slajd 19. Independent Component Analysis
 
