@@ -1,5 +1,5 @@
 """Testy projektu: python -m unittest discover -s tests -v   (po zbudowaniu PDF-ow)"""
-import ast, json, re, subprocess, sys, unittest
+import ast, json, os, re, subprocess, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -64,12 +64,11 @@ class Project(unittest.TestCase):
         self.assertEqual(int(console[0]), res["n_epochs"])
         self.assertAlmostEqual(float(console[1]), res["bal_acc"], places=3)
 
+    @unittest.skipUnless(os.getenv("EEG_INTEGRATION") == "1",
+                         "requires EEGBCI dataset (set EEG_INTEGRATION=1)")
     def test_analysis_matches_slides(self):
-        try:
-            import analysis
-            res = analysis.run_subject(1)
-        except Exception as e:  # brak danych
-            self.skipTest(str(e))
+        import analysis
+        res = analysis.run_subject(1)
         c = (ROOT / "presentation" / "console" / "s29.txt").read_text().split()
         self.assertAlmostEqual(res["bal_acc"], float(c[0]), places=3)
         self.assertEqual(res["n_epochs"], 45)
