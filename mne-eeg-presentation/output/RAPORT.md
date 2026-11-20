@@ -13,6 +13,8 @@ nbformat 5.11.1, nbclient 0.11.0, XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/
 - ERD pasma 8-13 Hz (okno 1-3 s, baseline -0,8...-0,2 s), ręce: C3 -55%, Cz -18%, C4 -45%; stopy: C3 +12%, Cz +19%, C4 +18%.
 Wyniki dotyczą jednej osoby i 44 prób (eksploracyjne, nie dowód ogólnego mechanizmu).
 
+**Zastrzeżenie walidacyjne:** próg kontroli jakości epok jest wyznaczany na całym zbiorze przed GroupKFold. Nie wykorzystuje etykiet, ale korzysta z rozkładu amplitud sygnału w przebiegach testowych, więc przygotowanie danych ma charakter transdukcyjny. Wyniki 0,976 opisują tę konkretną procedurę, a nie ściśle indukcyjną walidację całego pipeline na całkowicie nietkniętych danych testowych.
+
 ## Wykryte i poprawione problemy w materiałach wejściowych
 Dostarczono wyłącznie plan (.md) i specyfikację; notebook i skrypt `pipeline.py` z opisu nie zostały załączone,
 więc pipeline napisano od nowa, a plan zaudytowano:
