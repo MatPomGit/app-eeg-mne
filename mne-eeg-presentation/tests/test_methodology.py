@@ -52,7 +52,7 @@ class MethodologyTests(unittest.TestCase):
     def test_notebook_has_canonical_guides(self):
         nb = json.loads((ROOT / "notebooks/mne_eeg_workshop.ipynb").read_text())
         guides = json.loads((ROOT / "notes/notebook_guides.json").read_text())
-        self.assertIn("**Czym jest klasyfikator?**", guides["s27"])
+        self.assertIn("**Co to jest klasyfikator?**", guides["s27"])
         self.assertIn("oryginalnej listy zdarzeń", guides["s26"])
         for i, cell in enumerate(nb["cells"]):
             if cell["cell_type"] == "markdown" and i not in (0, len(nb["cells"]) - 1):
