@@ -1,0 +1,72 @@
+name: EEG reproducibility and presentation rebuild
+
+on:
+  pull_request:
+    paths:
+      - 'mne-eeg-presentation/**'
+      - '.github/workflows/eeg-rebuild.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eeg-rebuild-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: mne-eeg-presentation/requirements.txt
+      - name: Install XeLaTeX, fonts and PDF tools
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            texlive-xetex texlive-latex-extra texlive-lang-european \
+            texlive-bibtex-extra poppler-utils fonts-dejavu-core
+      - name: Install Python environment
+        run: python -m pip install -r mne-eeg-presentation/requirements.txt
+      - name: Rebuild data results, figures, slides, notes and notebook
+        env:
+          EEG_INTEGRATION: '1'
+          MPLBACKEND: Agg
+        run: |
+          cd mne-eeg-presentation
+          bash build.sh --perm
+      - name: Upload reproducibility artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: eeg-validated-materials
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            mne-eeg-presentation/output/mne_eeg_32_slajdy.pdf
+            mne-eeg-presentation/output/mne_eeg_32_slajdy_notes.pdf
+            mne-eeg-presentation/output/results/results.json
+            mne-eeg-presentation/notebooks/mne_eeg_workshop.ipynb
+      - name: Synchronize generated materials with PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f \
+            mne-eeg-presentation/presentation/console \
+            mne-eeg-presentation/presentation/figures \
+            mne-eeg-presentation/output/results \
+            mne-eeg-presentation/output/mne_eeg_32_slajdy.pdf \
+            mne-eeg-presentation/output/mne_eeg_32_slajdy_notes.pdf \
+            mne-eeg-presentation/notebooks/mne_eeg_workshop.ipynb
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore(eeg): rebuild validated materials [skip ci]'
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
