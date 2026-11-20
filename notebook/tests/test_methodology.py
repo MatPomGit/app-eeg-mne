@@ -37,7 +37,7 @@ class P3Methodology(unittest.TestCase):
     def test_event_code_mapping(self):
         events = source(self.nb, 40)
         self.assertIn(r'^stimulus/[1-5]{2}$', events)
-        self.assertIn(r'^stimulus/([1-5])\1, events)
+        self.assertIn(r'^stimulus/([1-5])\1$', events)
         self.assertIn("TARGET_RE.fullmatch(description)", events)
 
     def test_montage_is_version_aware(self):
