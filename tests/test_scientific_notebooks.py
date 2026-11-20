@@ -32,7 +32,7 @@ class ScientificNotebookTests(unittest.TestCase):
         self.assertIn('scoring="roc_auc"', code)
         self.assertIn("auc_fold.mean()", code)
         self.assertIn("roc_auc_fold_mean", code)
-        self.assertIn("offline", prose)
+        self.assertIn("transdukcyjn", prose.lower())
         self.assertIn("Czym jest klasyfikator", prose)
         for cell in nb["cells"]:
             if cell["cell_type"] == "code":
