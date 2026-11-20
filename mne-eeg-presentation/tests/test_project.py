@@ -60,6 +60,7 @@ class Project(unittest.TestCase):
     def test_results_consistent(self):
         res = json.loads((ROOT / "output" / "results" / "results.json").read_text())
         console = (ROOT / "presentation" / "console" / "s32.txt").read_text().split()
+        self.assertEqual(res["protocol"], "all_task_epochs_groupkfold_v2")
         self.assertEqual(int(console[0]), res["n_epochs"])
         self.assertAlmostEqual(float(console[1]), res["bal_acc"], places=3)
 
@@ -71,7 +72,7 @@ class Project(unittest.TestCase):
             self.skipTest(str(e))
         c = (ROOT / "presentation" / "console" / "s29.txt").read_text().split()
         self.assertAlmostEqual(res["bal_acc"], float(c[0]), places=3)
-        self.assertEqual(res["n_epochs"], 44)
+        self.assertEqual(res["n_epochs"], 45)
 
 
 if __name__ == "__main__":
