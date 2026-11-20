@@ -26,7 +26,7 @@ class Project(unittest.TestCase):
 
     def test_notes(self):
         md = (ROOT / "notes" / "speaker_notes.md").read_text()
-        notes = re.findall(r"## Slajd (\d+)\. (.*?)\n\n(.*?)\n\n", md, re.S)
+        notes = re.findall(r"## Slajd (\d+)\. (.*?)\n\n(.*?)(?=\n\n## Slajd |\Z)", md, re.S)
         self.assertEqual([int(n[0]) for n in notes], list(range(1, 33)))
         for n, t, text in notes:
             self.assertLessEqual(len(text), 1000, n)
