@@ -1,23 +1,24 @@
-Platform             Linux-6.18.44-fc-v470-x86_64-with-glibc2.39
-Python               3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]
-Executable           /usr/bin/python3
-CPU                  Intel(R) Xeon(R) Processor @ 2.80GHz (1 cores)
-Memory               3.9 GiB
+Platform             Linux-7.0.0-1017-azure-x86_64-with-glibc2.39
+Python               3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]
+Executable           /opt/hostedtoolcache/Python/3.12.16/x64/bin/python
+CPU                  AMD EPYC 7763 64-Core Processor (4 cores)
+Memory               15.6 GiB
 
 Core
-├☑ mne               1.13.2 (unable to check for latest version on GitHub, unknown error: HTTP Error 403: Forbidden)
-├☑ numpy             2.5.4 (OpenBLAS 0.3.34.106.0 with 1 thread via pthreads)
+├☑ mne               1.13.2 (latest release)
+├☑ numpy             2.5.5 (OpenBLAS 0.3.34.237.2 with 4 threads via pthreads)
 ├☑ scipy             1.18.1
-└☑ matplotlib        3.11.2 (backend=agg)
+└☑ matplotlib        3.11.2 (backend=Agg)
 
 Numerical (optional)
 ├☑ scikit-learn      1.9.1
-├☑ threadpoolctl     3.7.0
-├☑ pandas            3.0.6
+├☑ threadpoolctl     3.8.0
+├☑ pandas            3.1.1
 └☐ unavailable       numba, nibabel, nilearn, dipy, openmeeg, python-picard, jamica, cupy, h5io, h5py
 
 Visualization (optional)
-└☐ unavailable       pyvista, pyvistaqt, vtk, qtpy, ipympl, pyqtgraph, mne-qt-browser, ipywidgets, trame, trame_client, trame_server, trame_pyvista, trame_vtk, trame_vuetify
+├☑ ipywidgets        8.1.9
+└☐ unavailable       pyvista, pyvistaqt, vtk, qtpy, ipympl, pyqtgraph, mne-qt-browser, trame, trame_client, trame_server, trame_pyvista, trame_vtk, trame_vuetify
 
 Ecosystem (optional)
 ├☑ defusedxml        0.7.1

@@ -1,1 +1,13 @@
 notebook/data/
+
+# Generated files
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+mne-eeg-presentation/data/
+mne-eeg-presentation/notes/build/
+mne-eeg-presentation/presentation/*.aux
+mne-eeg-presentation/presentation/*.log
+mne-eeg-presentation/presentation/*.nav
+mne-eeg-presentation/presentation/*.snm
+mne-eeg-presentation/presentation/*.toc

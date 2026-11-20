@@ -48,7 +48,7 @@ def load_raw(subject: int = 1, runs=RUNS):
 
 
 def preprocess(raw):
-    """Dwie kopie: 1-40 Hz (TFR, ICA, QC) i 7-30 Hz (klasyfikacja); average reference."""
+    """Oddzielne kopie: 1-40 Hz do eksploracyjnej TFR/QC i 7-30 Hz do ML."""
     raw_tfr = raw.copy().filter(1.0, 40.0, fir_design="firwin")
     raw_clf = raw.copy().filter(7.0, 30.0, fir_design="firwin")
     for r in (raw_tfr, raw_clf):
@@ -63,7 +63,10 @@ def make_epochs(raw_tfr, raw_clf):
     p2p = np.ptp(epochs.get_data(), axis=2).max(axis=1)       # V, najgorszy kanal w epoce
     thr = np.median(p2p) + 3 * median_abs_deviation(p2p, scale="normal")
     epochs.drop_bad(reject=dict(eeg=thr))                     # prog odporny, bez uzycia etykiet
-    epochs_clf = mne.Epochs(raw_clf, epochs.events, EVENT_ID, tmin=TMIN, tmax=TMAX,
+    # Klasyfikator używa WSZYSTKICH zdarzeń, niezależnie od progowej selekcji QC.
+    # Próg wyznaczony z pełnego zapisu jest używany wyłącznie do eksploracyjnej TFR;
+    # zastosowanie go przed CV do danych ML ujawniałoby informację z biegów testowych.
+    epochs_clf = mne.Epochs(raw_clf, events, EVENT_ID, tmin=TMIN, tmax=TMAX,
                             baseline=None, reject_by_annotation=False, preload=True)
     return epochs, epochs_clf
 
@@ -92,9 +95,10 @@ def evaluate(X, y, groups, n_splits=3):
     base = cross_val_predict(DummyClassifier(strategy="most_frequent"), X, y, groups=groups, cv=cv)
     return dict(
         bal_acc=float(balanced_accuracy_score(y, y_hat)),
+        protocol="all_task_epochs_groupkfold_v2",
         folds=[float(f) for f in folds],
         balanced_accuracy_mean_folds=float(np.mean(folds)),
-        evaluation_scope="new run of same subject; offline QC estimated before CV",
+        evaluation_scope="all task epochs; GroupKFold by run, one subject; exploratory TFR QC does not select ML epochs",
         confusion=confusion_matrix(y, y_hat).tolist(),
         baseline_bal_acc=float(balanced_accuracy_score(y, base)),
     )
@@ -106,7 +110,7 @@ def run_subject(subject: int = 1, runs=RUNS):
     epochs, epochs_clf = make_epochs(raw_tfr, raw_clf)
     X, y, groups = make_xy(raw, epochs_clf, lens)
     res = evaluate(X, y, groups)
-    res.update(subject=subject, n_epochs=int(len(y)), X=X, y=y, groups=groups)
+    res.update(subject=subject, n_epochs=int(len(y)), n_tfr_epochs=int(len(epochs)), X=X, y=y, groups=groups)
     return res
 
 

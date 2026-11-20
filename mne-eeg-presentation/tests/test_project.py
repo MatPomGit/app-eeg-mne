@@ -1,5 +1,5 @@
 """Testy projektu: python -m unittest discover -s tests -v   (po zbudowaniu PDF-ow)"""
-import ast, json, re, subprocess, sys, unittest
+import ast, json, os, re, subprocess, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +26,7 @@ class Project(unittest.TestCase):
 
     def test_notes(self):
         md = (ROOT / "notes" / "speaker_notes.md").read_text()
-        notes = re.findall(r"## Slajd (\d+)\. (.*?)\n\n(.*?)\n\n", md, re.S)
+        notes = re.findall(r"## Slajd (\d+)\. (.*?)\n\n(.*?)(?=\n\n## Slajd |\Z)", md, re.S)
         self.assertEqual([int(n[0]) for n in notes], list(range(1, 33)))
         for n, t, text in notes:
             self.assertLessEqual(len(text), 1000, n)
@@ -60,18 +60,18 @@ class Project(unittest.TestCase):
     def test_results_consistent(self):
         res = json.loads((ROOT / "output" / "results" / "results.json").read_text())
         console = (ROOT / "presentation" / "console" / "s32.txt").read_text().split()
+        self.assertEqual(res["protocol"], "all_task_epochs_groupkfold_v2")
         self.assertEqual(int(console[0]), res["n_epochs"])
         self.assertAlmostEqual(float(console[1]), res["bal_acc"], places=3)
 
+    @unittest.skipUnless(os.getenv("EEG_INTEGRATION") == "1",
+                         "requires EEGBCI dataset (set EEG_INTEGRATION=1)")
     def test_analysis_matches_slides(self):
-        try:
-            import analysis
-            res = analysis.run_subject(1)
-        except Exception as e:  # brak danych
-            self.skipTest(str(e))
+        import analysis
+        res = analysis.run_subject(1)
         c = (ROOT / "presentation" / "console" / "s29.txt").read_text().split()
         self.assertAlmostEqual(res["bal_acc"], float(c[0]), places=3)
-        self.assertEqual(res["n_epochs"], 44)
+        self.assertEqual(res["n_epochs"], 45)
 
 
 if __name__ == "__main__":
