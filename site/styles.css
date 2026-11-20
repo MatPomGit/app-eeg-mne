@@ -50,7 +50,6 @@ h1 span { color: var(--accent); }
 .signal-light { width: 8px; height: 8px; border-radius: 50%; background: #24a99f; }
 .signal-label { margin-left: auto; font-size: .65rem; color: #687d92; letter-spacing: .06em; border: 1px solid #d9e4ec; border-radius: 5px; padding: 2px 6px; }
 .signal-graphic { display: block; width: 100%; height: auto; margin-top: 10px; }
-.signal-footnote { margin: 0 5px 4px; font-size: .75rem; color: #728397; }
 .section { padding-block: clamp(68px, 8vw, 105px); }
 .section-tinted { background: var(--soft); border-block: 1px solid #e5edf5; }
 .section-head { max-width: 720px; margin-bottom: 38px; }
@@ -68,15 +67,11 @@ h1 span { color: var(--accent); }
 .study-facts dd { margin: 2px 0 0; font-size: .91rem; font-weight: 590; }
 .text-link { margin-top: auto; font-size: .93rem; font-weight: 750; text-decoration: none; }
 .text-link:hover { text-decoration: underline; }
-.study-disclaimer { margin: 22px 0 0; color: #52677e; font-size: .92rem; max-width: 930px; }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 22px; margin: 0; padding: 0; list-style: none; }
 .steps li { min-width: 0; }
 .step-index { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 12px; background: #e0eafe; color: #2251b8; font-weight: 800; margin-bottom: 17px; }
 .steps h3 { font-size: 1.12rem; margin-bottom: 10px; }
 .steps p { color: var(--muted); font-size: .92rem; }
-.method-note { display: flex; gap: 15px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-radius: 14px; margin-top: 32px; padding: 19px 21px; }
-.method-note p { color: #40556a; margin: 0; font-size: .92rem; }
-.method-icon { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #deedff; color: var(--accent); font-family: Georgia, serif; font-weight: bold; }
 .resource-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 17px; }
 .resource { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 22px 54px 24px 24px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); text-decoration: none; transition: border-color .15s, transform .15s, box-shadow .15s; }
 .resource:hover { color: var(--ink); border-color: #a2bce9; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(40,91,204,.07); }

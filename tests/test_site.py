@@ -43,6 +43,19 @@ class SiteTests(unittest.TestCase):
         self.assertIn("CSP", self.page)
         self.assertIn("LDA", self.page)
 
+    def test_no_patronizing_disclaimers(self):
+        for phrase in (
+            "diagnozą kliniczną",
+            "odczytywania myśli",
+            "Nie należy utożsamiać",
+            "<strong>Ważne:</strong>",
+            'class="study-disclaimer"',
+            'class="method-note"',
+            'class="signal-footnote"',
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertNotIn(phrase, self.page)
+
     def test_internal_anchors_and_assets(self):
         for href in self.parser.links:
             if href.startswith("#"):
