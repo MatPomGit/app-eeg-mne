@@ -1,3 +1,5 @@
+> **Wyniki historyczne (pipeline 1.6.4).** Po korektach metodologicznych 1.6.5 wymagają ponownego wyliczenia. Nie traktuj zapisanych wartości testów i klasyfikatora jako zweryfikowanych w nowej wersji. Zobacz [`../CHANGELOG.md`](../CHANGELOG.md).
+
 # Dane wynikowe analizy P3
 
 - `sub-001_task-P3_ave.fif`: trzy obiekty Evoked pierwszej osoby: target, nontarget, target-minus-nontarget; amplitudy w V.
