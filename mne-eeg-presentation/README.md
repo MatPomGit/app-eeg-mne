@@ -58,7 +58,11 @@ bibliografii, brak czcionek poniżej 10 pt, zgodność `analysis.py` z wynikami 
 ## Ćwiczenie dla studentów
 `from analysis import run_subject` -> `run_subject(subject=2)`; następnie trening na S1 i test na S2; porównanie wyników.
 
-## Co klasyfikuje model i dlaczego?
-Model **CSP + LDA** rozróżnia epoki EEG zarejestrowane podczas wyobrażania ruchu **obu rąk** oraz **obu stóp**. CSP uczy się filtrów przestrzennych i zamienia sygnał w logarytmy wariancji; LDA przypisuje jedną z dwóch etykiet. To demonstracja dekodowania warunku eksperymentalnego, a nie diagnostyka zdolności ruchowych. Ocena `GroupKFold` obejmuje trzy biegi jednej osoby; nie dowodzi generalizacji na nowych uczestników. ICA na kanale Fp1 wskazuje kandydatów artefaktów, lecz nie jest automatycznie stosowana do danych klasyfikatora. Kryterium QC oszacowano offline z całości zapisu, co ogranicza interpretację wyników jako walidacji end-to-end.
+## Co klasyfikuje model, dlaczego i jak czytać notatnik?
+
+Notatnik zawiera instrukcję działania przed każdym etapem: **cel → operacja → wynik → ograniczenia**. Dzięki temu ćwiczenie nie polega wyłącznie na mechanicznym uruchomieniu kodu.
+Model **CSP + LDA** rozróżnia epoki EEG zarejestrowane podczas wyobrażania ruchu **obu rąk** oraz **obu stóp**. CSP uczy się filtrów przestrzennych i zamienia sygnał w logarytmy wariancji; LDA przypisuje jedną z dwóch etykiet. To demonstracja **nadzorowanej klasyfikacji**, czyli uczenia na oznaczonych przykładach i przewidywania etykiety dla nowej epoki. Sprawdzamy, czy sygnał zawiera informację predykcyjną o dwóch zadaniach. To dekodowanie warunku eksperymentalnego, nie odczytywanie myśli ani diagnostyka zdolności ruchowych. Ocena `GroupKFold` obejmuje trzy biegi jednej osoby; nie dowodzi generalizacji na nowych uczestników. ICA na kanale Fp1 wskazuje kandydatów artefaktów, lecz nie jest automatycznie stosowana do danych klasyfikatora. Kryterium QC oszacowano offline z całości zapisu, co ogranicza interpretację wyników jako walidacji end-to-end.
+
+Wynik dotyczy modelu **CSP + LDA**, którego dwa etapy są dopasowywane osobno w każdym podziale walidacji. Zapisane wyniki historyczne nie zastępują uruchomienia kodu na docelowym środowisku.
 
 Materiał P3/ERP to **odrębny eksperyment**: jego regresja logistyczna rozróżnia bodźce docelowe i niedocelowe, a nie wyobrażenie rąk i stóp.
