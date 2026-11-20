@@ -26,3 +26,15 @@ python -m unittest discover -s notebook/tests -v
 ```
 
 Testy strukturalne nie zastępują analizy na danych i wizualnej kontroli artefaktów.
+
+## Strona internetowa
+
+Prosta, statyczna strona projektu znajduje się w katalogu [site/](site/) (nie w `docs/`). Można ją uruchomić lokalnie:
+
+```bash
+python -m http.server 8000 --directory site
+```
+
+Po zmianach w `main` workflow [EEG website](.github/workflows/pages.yml) publikuje zawartość `site/` przez GitHub Pages. W ustawieniach repozytorium **Settings → Pages → Build and deployment** wybierz źródło **GitHub Actions**, jeżeli nie jest jeszcze aktywne. Adres: https://matpomgit.github.io/app-eeg-mne/.
+
+Sprawdzenie strony: `python -m unittest discover -s tests -p 'test_site.py' -v`. Strona jest niezależna od generatorów dokumentacji i nie wymaga Node.js ani pakietów Pythona.
