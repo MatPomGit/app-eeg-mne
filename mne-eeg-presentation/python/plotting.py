@@ -312,7 +312,7 @@ def hook_s21(ns, figdir):
     for ax, c in zip(axes, ("hands", "feet")):
         im = _tf(ax, tfr[c], "C3", vlim=vl); ax.set_title(f"C3, {c}", loc="left", fontsize=11)
     axes[0].set_ylabel("Hz")
-    cb = fig.colorbar(im, ax=axes, pad=0.02); cb.set_label("dB")
+    cb = fig.colorbar(im, ax=axes, pad=0.02); cb.set_label("dB re 1 µV²")
     _save(fig, figdir, "s21_tfr")
 
 
