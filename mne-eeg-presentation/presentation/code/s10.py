@@ -1,0 +1,5 @@
+raw.set_montage("colin27_1005")
+pos = raw.get_montage().get_positions()
+print(len(pos["ch_pos"]), "pozycji w montazu")
+print("Cz [m]:", pos["ch_pos"]["Cz"].round(3))
+print("C3 [m]:", pos["ch_pos"]["C3"].round(3))

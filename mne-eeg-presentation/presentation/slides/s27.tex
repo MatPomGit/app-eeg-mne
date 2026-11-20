@@ -1,0 +1,22 @@
+\setsrc{Źródła: [11], [5], [13]}
+\begin{frame}{Klasyfikator CSP + LDA}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.68\textwidth}
+\codeblock{s27.py}\vspace{4pt}\consblock{s27.txt}
+\end{column}
+\begin{column}{0.30\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.42cm]
+\node[bg,minimum width=4.0cm,minimum height=0.95cm] (x) {$X$\ {\fontsize{10}{12}\selectfont próby $\times$ kanały $\times$ czas}};
+\node[bx,minimum width=4.0cm,below=of x] (c) {\bfseries CSP\\ {\fontsize{10}{12}\selectfont filtry z treningu}};
+\node[bg,minimum width=4.0cm,minimum height=0.8cm,below=of c] (f) {log-wariancja: 4 cechy};
+\node[bv,minimum width=4.0cm,below=of f] (l) {\bfseries LDA\\ {\fontsize{10}{12}\selectfont etykieta: hands / feet}};
+\draw[ar](x)--(c);\draw[ar](c)--(f);\draw[ar](f)--(l);
+\begin{scope}[on background layer]
+\node[draw=rose,dashed,line width=1pt,rounded corners=4pt,fit=(c)(f)(l),inner sep=4pt] (fold) {};
+\end{scope}
+\node[lbl,text=rose,anchor=north] at ($(fold.south)+(0,-0.02)$) {\fontsize{10}{12}\selectfont\bfseries fit tylko na treningu};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

@@ -1,0 +1,28 @@
+\setsrc{Źródła: [11], [12]}
+\begin{frame}{Common Spatial Patterns}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.92]
+\draw[->,grey] (-2.4,0)--(2.6,0) node[right,font=\fontsize{10}{12}\selectfont]{kanał A};
+\draw[->,grey] (0,-2.0)--(0,2.4) node[above,font=\fontsize{10}{12}\selectfont]{kanał B};
+\begin{scope}[rotate=-35]\draw[rose,line width=1.4pt,fill=rose!15] (0,0) ellipse (2.1 and 0.55);\end{scope}
+\begin{scope}[rotate=40]\draw[violet,line width=1.4pt,fill=violet!12] (0,0) ellipse (2.0 and 0.5);\end{scope}
+\draw[ar,color=plum] (0,0)--(1.55,1.3) node[above right,font=\fontsize{12}{14}\selectfont,text=plum]{$w_1$};
+\node[text=rose,font=\fontsize{10}{12}\selectfont\bfseries] at (1.9,-1.55) {klasa 1};
+\node[text=violet,font=\fontsize{10}{12}\selectfont\bfseries] at (-1.7,1.7) {klasa 2};
+\end{tikzpicture}
+
+{\fontsize{11}{13}\selectfont Filtr $w$ ustawia osie wzdłuż kierunku, w którym stosunek wariancji klas jest największy.}
+\end{column}
+\begin{column}{0.5\textwidth}
+\vspace{0.1cm}
+{\color{plum}\bfseries Problem:}
+\[\max_{w}\ \frac{w^{\top}\Sigma_1 w}{w^{\top}(\Sigma_1+\Sigma_2)\,w}\]
+{\color{plum}\bfseries Rozwiązanie} (uogólniony problem własny):
+\[\Sigma_1 w=\lambda\,(\Sigma_1+\Sigma_2)\,w\]
+{\color{plum}\bfseries Cecha próby:}
+\[f_k=\log\operatorname{var}\!\left(w_k^{\top}x\right)\]
+\end{column}
+\end{columns}
+\end{frame}

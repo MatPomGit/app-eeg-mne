@@ -1,0 +1,20 @@
+\setsrc{Źródła: [16], [4]}
+\begin{frame}{Eksport wyników}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.68\textwidth}
+\codeblock{s31.py}\vspace{4pt}\consblock{s31.txt}
+\end{column}
+\begin{column}{0.30\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.35cm]
+\node[bv,minimum width=4.0cm,minimum height=0.8cm] (d) {\texttt{output/results/}};
+\node[bx,minimum width=4.1cm,below right=0.3cm and -0.1cm of d.south west,anchor=north west,align=left] (a) {\texttt{S001-clf-epo.fif}\\ {\fontsize{10}{12}\selectfont epoki 7--30 Hz}};
+\node[bx,minimum width=4.1cm,below=of a,align=left] (b) {\texttt{results.json}\\ {\fontsize{10}{12}\selectfont wyniki i wersje}};
+\node[bg,minimum width=4.1cm,below=of b,align=left] (c) {\texttt{requirements.txt}\\ {\fontsize{10}{12}\selectfont środowisko}};
+\draw[plum,line width=0.8pt] ([xshift=0.15cm]d.south west)|-(a.west);
+\draw[plum,line width=0.8pt] ([xshift=0.15cm]d.south west)|-(b.west);
+\draw[plum,line width=0.8pt] ([xshift=0.15cm]d.south west)|-(c.west);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

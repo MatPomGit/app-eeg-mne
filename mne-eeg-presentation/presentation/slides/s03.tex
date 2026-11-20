@@ -1,0 +1,20 @@
+\setsrc{Źródła: [1], [2], [3]}
+\begin{frame}{Zbiór EEGBCI}
+\begin{itemize}\setlength\itemsep{2pt}
+\item 109 osób, 64 kanały, 160 Hz
+\item biegi \hl{6, 10, 14}: \hl{wyobrażanie} obu rąk (T1) lub obu stóp (T2)
+\item biegi 5, 9, 13: ten sam ruch \emph{wykonywany}
+\item tu: uczestnik 1, trzy biegi po ok. 125 s
+\end{itemize}
+\vspace{0.2cm}
+\centering
+\begin{tikzpicture}[x=0.5cm]
+\foreach \x/\w/\c/\t in {0/4.2/blush/T0,4.2/4.1/rose/T1,8.3/4.2/blush/T0,12.5/4.1/violet/T2,16.6/4.2/blush/T0,20.8/4.1/rose/T1}{
+  \fill[\c] (\x,0) rectangle ++(\w,0.9); \node[font=\fontsize{12}{14}\selectfont\bfseries,text=ink] at (\x+\w/2,0.45) {\t};}
+\node[lbl,anchor=north] at (2.1,-0.1) {odpoczynek\\4,2 s};
+\node[lbl,anchor=north] at (6.25,-0.1) {obie ręce\\4,1 s};
+\node[lbl,anchor=north] at (14.5,-0.1) {obie stopy\\4,1 s};
+\draw[ar] (0,1.35)--(24.9,1.35);
+\node[lbl] at (12.5,1.8) {czas $\rightarrow$ kolejne próby w jednym biegu};
+\end{tikzpicture}
+\end{frame}

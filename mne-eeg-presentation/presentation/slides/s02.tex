@@ -1,0 +1,21 @@
+\setsrc{}
+\begin{frame}{Pipeline analizy EEG}
+\msg{Osiem etapów prowadzi od surowego zapisu do oceny klasyfikatora.}
+\centering\vspace{0.15cm}
+\begin{tikzpicture}[node distance=0.5cm and 0.55cm]
+\tikzset{pb/.style={minimum width=3.15cm,minimum height=1.45cm}}
+\node[bx,pb] (a) {\bfseries Surowy zapis\\ {\fontsize{10}{12}\selectfont Raw, slajdy 7--12}};
+\node[bx,pb,right=of a] (b) {\bfseries Kontrola\\ {\fontsize{10}{12}\selectfont PSD, artefakty, ICA}};
+\node[bx,pb,right=of b] (c) {\bfseries Filtracja\\ {\fontsize{10}{12}\selectfont i referencja, 14--15}};
+\node[bx,pb,right=of c] (d) {\bfseries Epoki\\ {\fontsize{10}{12}\selectfont zdarzenia, 16--18}};
+\node[bv,pb,below=1.15cm of d] (e) {\bfseries PSD\,/\,TFR\\ {\fontsize{10}{12}\selectfont ERD/ERS, 20--24}};
+\node[bv,pb,left=of e] (f) {\bfseries CSP\\ {\fontsize{10}{12}\selectfont cechy, 25--26}};
+\node[bv,pb,left=of f] (g) {\bfseries LDA\\ {\fontsize{10}{12}\selectfont klasyfikator, 27}};
+\node[bv,pb,left=of g] (h) {\bfseries Walidacja\\ {\fontsize{10}{12}\selectfont między biegami, 28--30}};
+\draw[ar](a)--(b);\draw[ar](b)--(c);\draw[ar](c)--(d);\draw[ar](d)--(e);
+\draw[ar](e)--(f);\draw[ar](f)--(g);\draw[ar](g)--(h);
+\end{tikzpicture}
+
+\vspace{0.2cm}
+{\fontsize{10}{12}\selectfont\color{plum}\rule{0.4cm}{0.18cm}\ przygotowanie danych\quad\color{violet}\rule{0.4cm}{0.18cm}\ analiza i uczenie maszynowe}
+\end{frame}

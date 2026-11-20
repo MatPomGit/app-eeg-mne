@@ -1,0 +1,10 @@
+mne>=1.13,<1.14
+numpy>=2.0
+scipy>=1.13
+matplotlib>=3.8
+scikit-learn>=1.5
+pandas
+jupyter
+nbformat
+nbclient
+ipykernel

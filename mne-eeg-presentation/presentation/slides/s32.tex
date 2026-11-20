@@ -1,0 +1,22 @@
+\setsrc{Źródła: [17], [14]}
+\begin{frame}{Podsumowanie i zadanie praktyczne}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.66\textwidth}
+\codeblock{s32.py}\vspace{4pt}\consblock{s32.txt}\vspace{8pt}
+
+{\color{plum}\bfseries Ograniczenia:}\par
+\begin{itemize}\setlength\itemsep{1pt}
+\item jedna osoba, 44 epoki
+\item okno i pasma ustalone a priori
+\end{itemize}
+\end{column}
+\begin{column}{0.32\textwidth}
+\begin{tikzpicture}[node distance=0.25cm]
+\tikzset{tk/.style={minimum width=4.4cm,align=left,text width=4.1cm}}
+\node[bx,tk] (t1) {\bfseries 1.\ \texttt{subject=2}\\ {\fontsize{10}{12}\selectfont walidacja w obrębie osoby}};
+\node[bx,tk,below=of t1] (t2) {\bfseries 2.\ trening S1 $\rightarrow$ test S2\\ {\fontsize{10}{12}\selectfont ocena na nowym uczestniku}};
+\node[bv,tk,below=of t2] (t3) {\bfseries 3.\ porównaj wyniki\\ {\fontsize{10}{12}\selectfont parametry bez zbioru testowego}};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

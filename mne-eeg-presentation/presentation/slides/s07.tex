@@ -1,0 +1,17 @@
+\setsrc{Źródła: [2], [3]}
+\begin{frame}{Pobieranie danych}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.68\textwidth}
+\codeblock{s07.py}\vspace{6pt}
+\consblock{s07.txt}\vspace{8pt}
+{\color{grey}\texttt{update\_path=False} nie zmienia konfiguracji MNE.}
+\end{column}
+\begin{column}{0.30\textwidth}
+\centering
+\begin{tikzpicture}
+\foreach \y/\r in {0/06,-1.9/10,-3.8/14}{
+ \node[bx,minimum width=4.0cm,minimum height=1.55cm] at (0,\y) {\texttt{S001R\r.edf}\\ \small ręce / stopy};}
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

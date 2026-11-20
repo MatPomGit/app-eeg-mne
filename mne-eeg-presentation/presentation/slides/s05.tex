@@ -1,0 +1,17 @@
+\setsrc{Źródła: [4]}
+\begin{frame}{Struktury danych MNE-Python}
+\msg{Każdy obiekt opisuje inny zestaw osi: kanał, czas, częstotliwość, próba.}
+\centering
+\begin{tikzpicture}[node distance=0.9cm and 1.3cm]
+\node[bx,minimum width=3.0cm,minimum height=1.6cm] (raw) {\bfseries Raw\\ \small kanały $\times$ czas};
+\node[bx,minimum width=3.0cm,minimum height=1.6cm,right=1.95cm of raw] (ep) {\bfseries Epochs\\ \small próby $\times$ kanały $\times$ czas};
+\node[bx,minimum width=3.0cm,minimum height=1.6cm,right=1.95cm of ep] (ev) {\bfseries Evoked\\ \small kanały $\times$ czas};
+\node[bv,minimum width=3.0cm,minimum height=1.6cm,below=1.5cm of raw] (sp) {\bfseries Spectrum\\ \small kanały $\times$ częstotliwość};
+\node[bv,minimum width=3.0cm,minimum height=1.6cm,below=1.5cm of ep] (tf) {\bfseries TFR\\ \small kanały $\times$ częst. $\times$ czas};
+\draw[ar](raw)--node[above,lbl]{zdarzenia}(ep);
+\draw[ar](ep)--node[above,lbl]{\texttt{average()}}(ev);
+\draw[ar](raw)--node[left,lbl]{\texttt{compute\_psd}}(sp);
+\draw[ar](ep)--node[left,lbl]{\texttt{compute\_tfr}}(tf);
+\draw[ar](ep)--node[above right,lbl,pos=0.55]{}(sp);
+\end{tikzpicture}
+\end{frame}

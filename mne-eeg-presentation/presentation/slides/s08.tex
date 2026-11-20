@@ -1,0 +1,24 @@
+\setsrc{Źródła: [4]}
+\begin{frame}{Wczytywanie plików EDF}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.68\textwidth}
+\codeblock{s08.py}\vspace{6pt}
+\consblock{s08.txt}\vspace{6pt}
+
+{\fontsize{11}{13}\selectfont\hl{Uwaga:} \texttt{concatenate\_raws} modyfikuje \texttt{raws[0]}, więc długości biegów zapisz wcześniej.}
+\end{column}
+\begin{column}{0.30\textwidth}
+\centering
+\begin{tikzpicture}[x=0.05cm]
+\foreach \y/\r in {0/06,-1.2/10,-2.4/14}{\fill[rose!70] (0,\y) rectangle ++(28,0.8); \node[font=\fontsize{10}{12}\selectfont,text=white] at (14,\y+0.4) {R\r};}
+\draw[ar] (14,-2.9)--(14,-3.8);
+\fill[rose!70] (0,-5) rectangle ++(28,0.8) (28,-5) rectangle ++(0.01,0.8);
+\fill[violet!70] (28,-5) rectangle ++(28,0.8);
+\fill[plum!80] (56,-5) rectangle ++(28,0.8);
+\node[lbl,anchor=north] at (42,-5.1) {60\,000 próbek};
+\node[font=\fontsize{10}{12}\selectfont,text=ink,anchor=south] at (28,-4.1) {\texttt{EDGE}};
+\end{tikzpicture}
+
+\end{column}
+\end{columns}
+\end{frame}

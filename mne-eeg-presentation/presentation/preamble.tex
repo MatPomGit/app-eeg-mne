@@ -1,0 +1,83 @@
+% Preambula: Beamer + Metropolis, bialy ekran, paleta rozu i fioletu, czcionki >= 10 pt
+\documentclass[aspectratio=169,12pt]{beamer}
+\usetheme[progressbar=none,numbering=none,background=light]{metropolis}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{polish}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.misc,fit,calc,backgrounds}
+\usepackage{listings}
+\usepackage{amsmath}
+
+% --- czcionki (z zapasowymi) ---
+\IfFontExistsTF{Inter}{\setsansfont{Inter}}{\IfFontExistsTF{Fira Sans}{\setsansfont{Fira Sans}}{\setsansfont{TeX Gyre Heros}}}
+\IfFontExistsTF{Latin Modern Mono}{\setmonofont{Latin Modern Mono}}{\IfFontExistsTF{DejaVu Sans Mono}{\setmonofont{DejaVu Sans Mono}}{}}
+
+% --- paleta ---
+\definecolor{plum}{HTML}{7B2D5F}
+\definecolor{rose}{HTML}{D94F8A}
+\definecolor{violet}{HTML}{6C5CB8}
+\definecolor{lav}{HTML}{B7A9E0}
+\definecolor{blush}{HTML}{FBE4EE}
+\definecolor{lilac}{HTML}{EDE7F6}
+\definecolor{ink}{HTML}{3B2A3F}
+\definecolor{grey}{HTML}{7C7180}
+\definecolor{codebg}{HTML}{FDF3F8}
+\setbeamercolor{normal text}{fg=ink,bg=white}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{frametitle}{fg=plum,bg=white}
+\setbeamercolor{alerted text}{fg=rose}
+\setbeamercolor{itemize item}{fg=rose}
+\setbeamercolor{itemize subitem}{fg=rose}
+\setbeamerfont{itemize/enumerate body}{size=\normalsize}
+\setbeamertemplate{itemize item}{\raisebox{0.1ex}{\fontsize{10}{10}\selectfont$\blacksquare$}}
+\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+
+% --- tytul ramki: wyzej, z cienka linia ---
+\setbeamertemplate{frametitle}{%
+  \vspace*{-0.12cm}%
+  {\color{plum}\bfseries\fontsize{17}{19}\selectfont\insertframetitle\par}%
+  \vspace*{-0.2cm}{\color{rose}\rule{\textwidth}{1.1pt}}\par\vspace*{0.05cm}}
+\setbeamertemplate{headline}{}
+\newcommand{\fsrc}{}
+\newcommand{\setsrc}[1]{\gdef\fsrc{#1}}
+\setbeamertemplate{footline}{%
+  \hspace*{0.5cm}{\color{grey}\fontsize{10}{12}\selectfont\fsrc}\hfill
+  {\color{grey}\fontsize{10}{12}\selectfont\insertframenumber\,/\,32}\hspace*{0.5cm}\vspace*{0.18cm}}
+\setbeamertemplate{navigation symbols}{}
+
+% --- kod i konsola ---
+\lstdefinestyle{pycode}{language=Python,basicstyle=\ttfamily\fontsize{10}{12}\selectfont\color{ink},
+  keywordstyle=\bfseries\color{rose},stringstyle=\color{violet},commentstyle=\itshape\color{grey},
+  showstringspaces=false,backgroundcolor=\color{codebg},frame=single,rulecolor=\color{blush},
+  framesep=3pt,xleftmargin=3pt,xrightmargin=3pt,columns=fixed,keepspaces=true,
+  morekeywords={as},emph={self},aboveskip=0pt,belowskip=0pt}
+\lstdefinestyle{console}{language={},basicstyle=\ttfamily\fontsize{10}{12}\selectfont\color{plum},
+  backgroundcolor=\color{white},frame=l,rulecolor=\color{rose},framerule=2pt,framesep=4pt,
+  xleftmargin=5pt,columns=fixed,keepspaces=true,showstringspaces=false,aboveskip=0pt,belowskip=0pt}
+\lstdefinestyle{shell}{style=pycode,language=bash,morekeywords={python,pip,source}}
+\newcommand{\codeblock}[1]{\lstinputlisting[style=pycode]{code/#1}}
+\newcommand{\shellblock}[1]{\lstinputlisting[style=shell]{code/#1}}
+\newcommand{\consblock}[1]{\lstinputlisting[style=console]{console/#1}}
+\newcommand{\fig}[2]{\includegraphics[#1]{figures/#2}}
+\newcommand{\msg}[1]{{\color{rose}\bfseries #1}\par\vspace{4pt}}
+\newcommand{\hl}[1]{{\color{rose}\bfseries #1}}
+
+% --- schematy TikZ ---
+\tikzset{
+  bx/.style={draw=plum,rounded corners=3pt,fill=blush,text=ink,align=center,minimum height=0.95cm,
+             inner sep=3pt,font=\fontsize{11}{13}\selectfont,line width=0.8pt},
+  bv/.style={bx,draw=violet,fill=lilac},
+  bg/.style={bx,draw=grey,fill=white},
+  ar/.style={-{Stealth[length=2.6mm]},line width=1.1pt,color=plum},
+  lbl/.style={font=\fontsize{10}{12}\selectfont,text=grey,align=center},
+}
+
+% --- uklad: rysunek u gory, kod i wynik pod spodem ---
+\newcommand{\tslide}[2]{%
+  \centering\fig{width=\linewidth}{#1}\par\vspace{5pt}
+  \begin{columns}[T,onlytextwidth]
+  \begin{column}{0.70\textwidth}\codeblock{#2.py}\end{column}
+  \begin{column}{0.28\textwidth}\consblock{#2.txt}\end{column}
+  \end{columns}}
