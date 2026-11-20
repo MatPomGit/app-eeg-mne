@@ -72,7 +72,7 @@ Epoki obejmują okno od −1,5 do 4,5 s względem wskazówki. Rozszerzyłem je w
 
 ## Slajd 18. Kontrola jakości
 
-Plan sugerował próg 200 µV. Sprawdziłem go na danych: odrzuciłby 43 z 45 epok, więc jest bezużyteczny dla filtrowanego zakresu 1–40 Hz. Dlatego używamy progu odpornego: mediana plus trzy skalowane odchylenia MAD, bez użycia etykiet klas. Wynosi 722 µV i odrzuca jedną epokę. Wniosek dydaktyczny: kryteria automatyczne trzeba kalibrować na danych i raportować ich skutek. Ograniczenie: próg jest obliczany na całym zapisie, również na biegu testowym. To niesuperwizowane, transdukcyjne przygotowanie danych; nie można twierdzić, że cały pipeline jest wolny od wpływu danych testowych. Dla ścisłej walidacji end-to-end próg ustalmy wcześniej lub w zbiorze treningowym.
+Analizujemy rozstęp peak-to-peak każdej epoki w kopii 1–40 Hz. Demonstracyjny próg mediany + 3 MAD jest oszacowany na wszystkich epokach i usuwa jedną z historycznych 45 prób. To selekcja wyłącznie do opisowej analizy ERD/ERS, a nie filtr, który decyduje o tym, jakie próby trafią do treningu i testu klasyfikatora. Model CSP + LDA otrzyma wszystkie poprawnie wycięte epoki zadania z kopii 7–30 Hz, co eliminuje przeciek informacji przez wspólny próg QC. Wyjaśniam studentom, dlaczego selekcja wykonana na testowych danych przed walidacją mogłaby zniekształcić jej wynik.
 
 ## Slajd 19. Independent Component Analysis
 
@@ -104,7 +104,7 @@ CSP szuka filtrów przestrzennych maksymalizujących stosunek wariancji jednej k
 
 ## Slajd 26. Przygotowanie danych ML
 
-Budujemy macierz X o wymiarach 44 próby, 64 kanały, 480 próbek, bo klasyfikujemy okno 0,5–3,5 s, wybrane a priori, nie dobrane na danych. Wektor y zawiera etykiety 1 i 2, czyli 21 rąk i 23 stopy. Grupy to numery biegów: 15, 14 i 15 epok. Wykres pokazuje, że klasy są w każdej grupie zrównoważone. Epoki do klasyfikacji pochodzą z danych 7–30 Hz i tych samych zdarzeń, które przeżyły kontrolę jakości.
+Zaczynam od pytania: jaki jest pojedynczy przykład dla modelu? To trzysekundowa epoka EEG po wskazówce. Macierz X ma osie: próby, kanały, próbki czasu; wektor y zawiera etykiety z protokołu, a groups identyfikatory biegów. Klasyfikator otrzymuje **wszystkie** epoki zadania z pasma 7–30 Hz, niezależnie od eksploracyjnej selekcji QC w analizie ERD/ERS. W oryginalnym zbiorze mamy 45 zdarzeń, ale faktyczna liczba epok zależy od możliwości ich wycięcia. Wyjaśniam rolę grup: jeden bieg nigdy nie znajduje się jednocześnie w treningu i w teście.
 
 ## Slajd 27. Klasyfikator CSP + LDA
 
@@ -112,11 +112,11 @@ Wyjaśniam, czym jest klasyfikator: to model nadzorowany, który uczy się na oz
 
 ## Slajd 28. Walidacja modelu
 
-GroupKFold dzieli epoki według biegów: trening na dwóch biegach, test na trzecim. Wyniki z historycznego wykonania po biegach to 0,93, 1,0 i 1,0; losowy podział dał 0,88, 0,93 i 1,0 (liczby trzeba potwierdzić po ponownym wykonaniu). Wbrew oczekiwaniom losowy podział nie zawyżył tu wyniku; różnice mieszczą się w szumie przy 44 próbach [14]. Nadal zalecam podział według biegów, bo epoki z jednej sesji są skorelowane i w innych zbiorach losowy podział zawyża wyniki. Nie oceniamy generalizacji na nowe osoby.
+GroupKFold uczy oba składniki pipeline'u CSP + LDA na dwóch biegach, a ocenia na trzecim. Pokazuję wyniki obliczone przy aktualnym uruchomieniu, a nie wartości zapamiętane z poprzedniej wersji analizy. Losowy StratifiedKFold służy tylko jako porównanie dydaktyczne. Wynik po zmianie kwalifikacji epok może różnić się od archiwalnego. Walidacja dotyczy kolejnego biegu tej samej osoby. Nie obejmuje nowych uczestników, innych urządzeń ani innych sesji. Klasyfikator nie korzysta z eksploracyjnego progu QC.
 
 ## Slajd 29. Ocena jakości klasyfikacji
 
-Zbalansowana dokładność wynosi 0,976, a klasyfikator większościowy daje 0,5. Macierz pomyłek: 20 rąk i 23 stóp rozpoznanych poprawnie, jedna ręka uznana za stopę. Test permutacyjny z 200 permutacjami etykiet (w notatniku) daje p = 0,005, a średnia permutacji to 0,49. Wynik jest wysoki, ale dotyczy jednej osoby i 44 prób, więc przedział niepewności jest szeroki [14]. Nie przedstawiam go jako dowodu na ogólną skuteczność.
+Objaśniam macierz pomyłek: wiersze to rzeczywiste etykiety polecenia, kolumny to predykcje modelu. Balanced accuracy jest średnią czułości dla obu klas; porównujemy ją z klasyfikatorem większościowym, którego zbalansowana dokładność wynosi około 0,5. Prezentuję tylko wynik wygenerowany z aktualnego kodu. Historyczne 0,976 uzyskano po wyselekcjonowaniu 44 epok na podstawie progu QC całego zbioru i **nie jest ono wynikiem bieżącego protokołu**. Test permutacyjny i jego wartość p również wymagają przeliczenia.
 
 ## Slajd 30. Interpretacja komponentów CSP
 
@@ -124,9 +124,8 @@ Wzorce, górny rząd, pokazują, jak źródło rzutuje na elektrody, i to je int
 
 ## Slajd 31. Eksport wyników
 
-Zapisuję epoki do formatu FIF, a wyniki i wersje oprogramowania do JSON. To minimum reprodukowalności [16]: dane przetworzone, parametry, wynik i środowisko. Wynik w konsoli to dwa pliki w katalogu output/results. Surowych danych nie zapisujemy, bo pobiera je load_data. Dodatkowo w repozytorium jest requirements.txt. Uwaga: w pliku wyników zapisuję także liczbę epok, bo różni się od liczby zdarzeń po kontroli jakości.
+Zapisuję epoki używane do klasyfikacji i wynik bieżącej walidacji do plików FIF oraz JSON. Wyraźnie odróżniam dane do klasyfikacji od epok odrzuconych wyłącznie w eksploracyjnej analizie TFR. Metadane obejmują liczbę ocenionych epok, protokół walidacji i wersję środowiska; taki zapis umożliwia wykrycie, czy ktoś nie prezentuje rezultatu innej wersji analizy. Starsze liczby z poprzedniego przebiegu nie powinny pojawiać się na slajdach jako aktualne.
 
 ## Slajd 32. Podsumowanie i zadanie praktyczne
 
-Skrypt run_subject wykonuje cały tor dla wybranej osoby i daje wynik 0,976 dla uczestnika 1, zgodny z tym, co oglądaliśmy. Zadanie dla studentów: po pierwsze uruchomić dla subject=2, po drugie wytrenować na osobie 1 i przetestować na osobie 2, po trzecie porównać wyniki. Parametry, jak okno czy pasma, wybierają bez użycia zbioru testowego; również kontrola jakości nie powinna wykorzystywać danych testowych do ustalania progu. Ograniczenia: jedna osoba, 44 epoki, parametry ustalone a priori. Dziękuję; pytania.
-
+Podsumowuję logikę analizy: od surowego EEG przez czasowo-częstotliwościowy opis rytmów do modelu CSP + LDA, który odróżnia dwie etykiety zadania. Klasyfikator trenujemy osobno na każdym podziale walidacji między biegami. Proszę uruchomić ten sam protokół dla uczestnika 2, a następnie rozważyć odrębne badanie transferu S1 → S2: wszystkie uczone kroki trzeba wówczas dopasować bez dostępu do danych S2. Nie porównujemy wyników bez sprawdzenia, czy dotyczą identycznego doboru epok i metryk.
