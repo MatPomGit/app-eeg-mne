@@ -8,7 +8,7 @@ shutil.rmtree(W, ignore_errors=True); (W / "thumbs").mkdir(parents=True)
 pdf = ROOT / "presentation" / "main.pdf"
 subprocess.run(["pdftoppm", "-r", "70", "-png", str(pdf), str(W / "thumbs" / "s")], check=True)
 thumbs = sorted((W / "thumbs").glob("s-*.png"))
-notes = re.findall(r"## Slajd (\d+)\. (.*?)\n\n(.*?)\n\n", (ROOT / "notes" / "speaker_notes.md").read_text(), re.S)
+notes = re.findall(r"## Slajd (\d+)\. (.*?)\n\n(.*?)(?=\n\n## Slajd |\Z)", (ROOT / "notes" / "speaker_notes.md").read_text(), re.S)
 assert len(notes) == len(thumbs) == 32, (len(notes), len(thumbs))
 esc = lambda s: (s.replace("\\", "\\textbackslash{}").replace("&", "\\&").replace("%", "\\%")
                  .replace("_", "\\_").replace("#", "\\#").replace("$", "\\$"))
