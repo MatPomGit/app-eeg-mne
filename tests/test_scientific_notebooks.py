@@ -28,10 +28,10 @@ class ScientificNotebookTests(unittest.TestCase):
         self.assertIn('"colin27_1005" in mne.channels.get_builtin_montages()', code)
         self.assertIn('raw.set_montage(montage_name', code)
         self.assertIn('else "standard_1005"', code)
-        self.assertIn("ep.apply_baseline((EPOCH_TMIN, 0.0))", code)
+        self.assertIn("ep.apply_baseline((EPOCH_TMIN, 0))", code)
         self.assertIn('scoring="roc_auc"', code)
-        self.assertIn("fold_auc.mean()", code)
-        self.assertIn("roc_auc_mean_folds", code)
+        self.assertIn("auc_fold.mean()", code)
+        self.assertIn("roc_auc_fold_mean", code)
         self.assertIn("offline", prose)
         self.assertIn("Czym jest klasyfikator", prose)
         for cell in nb["cells"]:
