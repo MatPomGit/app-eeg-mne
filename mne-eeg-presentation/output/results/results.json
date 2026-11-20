@@ -1,1 +1,1 @@
-{"subject": 1, "n_epochs": 44, "bal_acc": 0.976, "mne": "1.13.2", "sklearn": "1.9.1"}
+{"subject": 1, "n_epochs": 45, "protocol": "all_task_epochs_groupkfold_v2", "bal_acc": 0.955, "mne": "1.13.2", "sklearn": "1.9.1"}
