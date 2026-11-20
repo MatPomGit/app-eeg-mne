@@ -14,3 +14,6 @@ ica_converged i ica_excluded odnoszą się do korekcji artefaktów, zaś thresho
 Plik results.json zawiera wynik testu sparowanego na poziomie osób oraz metryki klasyfikacji, jeśli dało się je obliczyć. Wysokość P3 nie jest bezpośrednim wynikiem testu uwagi, a AUC nie jest odsetkiem poprawnych odpowiedzi uczestników.
 
 Wyniki należy interpretować z uwzględnieniem jakości zapisu i przyjętych założeń analizy.
+
+### Klasyfikator i ograniczenia walidacji
+Regresja logistyczna uczy się rozróżniać bodźce docelowe od niedocelowych na podstawie amplitud EEG, nie ocenia zachowania uczestnika. **Główna metryka AUC** w aktualnym kodzie jest średnią AUC obliczanych osobno w foldach walidacji według osób. Łączna krzywa ROC z predykcji OOF służy tylko wizualizacji, ponieważ modele mają różne skale wyników decyzyjnych. ICA i próg QC oszacowano wcześniej na pełnym EEG każdej osoby, również testowanej (protokół offline/transdukcyjny). Zapisane wcześniej `results.json` zawiera historyczny wynik; po zmianie metodologii należy go odtworzyć przez ponowne uruchomienie notatnika.

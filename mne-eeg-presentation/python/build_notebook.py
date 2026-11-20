@@ -10,6 +10,14 @@ for line in (ROOT / "notes" / "speaker_notes.md").read_text().splitlines():
     m = re.match(r"## Slajd (\d+)\. (.*)", line)
     if m:
         titles[int(m.group(1))] = m.group(2)
+DIDACTIC = {
+    26: "**Instrukcja:** sprawdź `X.shape`, `y` oraz `groups`. Każda epoka ma 64 kanały i próbki z okna 0,5–3,5 s; `y` oznacza wyobrażanie obu rąk lub obu stóp, a `groups` identyfikuje bieg. To numer biegu rozdziela trening i test.",
+    27: "**Co to jest klasyfikator?** To model przewidujący klasę nieznanej epoki EEG. Pytamy, czy badany wyobrażał sobie ruch obu rąk czy obu stóp. CSP wyznacza filtry przestrzenne i cztery logarytmy wariancji, a LDA na ich podstawie uczy się rozdzielać klasy. Oba kroki są dopasowywane tylko na treningu danego foldu. Nie jest to diagnoza funkcji ruchowych ani odczytywanie dowolnych intencji.",
+    28: "**Jak czytać:** dwa biegi służą do nauki, trzeci do testu. Balanced accuracy to średnia czułość obu klas. Porównanie z podziałem losowym jest demonstracją, a nie alternatywnym wynikiem głównym. Ten test ocenia nowe biegi tej samej osoby, nie nowych uczestników.",
+    29: "**Po co punkt odniesienia?** Model większościowy zawsze zwraca jedną klasę. Balanced accuracy około 0,5 stanowi właściwy punkt odniesienia. Macierz pomyłek pokazuje, którą klasę model myli i jak często. Wynik CSP+LDA nie uprawnia do wnioskowania o innych uczestnikach.",
+}
+PERM_DESCRIPTION = "**Ograniczenie:** permutujemy etykiety wewnątrz biegów, zakładając wymienność prób; nie gwarantuje jej z definicji struktura zapisu. Próg QC oszacowano z całości sygnału przed CV (offline/transdukcyjnie)."
+
 nb = nbf.v4.new_notebook()
 cells = [nbf.v4.new_markdown_cell(
     "# Analiza EEG z MNE-Python: notatnik do prezentacji\n"
@@ -25,6 +33,7 @@ for p in sorted((ROOT / "presentation" / "code").glob("s[0-9][0-9]*.py"), key=la
     head = f"## Slajd {n:02d}. {titles.get(n, '')}"
     if p.stem == "s29b":
         head = "## Dodatek: test permutacyjny (ok. 1,5 min)"
+    head += "\n\n" + (PERM_DESCRIPTION if p.stem == "s29b" else DIDACTIC.get(n, ""))
     cells.append(nbf.v4.new_markdown_cell(head))
     cells.append(nbf.v4.new_code_cell(p.read_text()))
 cells.append(nbf.v4.new_markdown_cell(

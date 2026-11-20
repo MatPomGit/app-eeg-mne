@@ -77,6 +77,11 @@ def make_xy(raw, epochs_clf, run_lengths):
 
 
 def make_classifier():
+    """Klasyfikator wyobrażania ruchu: EEG -> filtry CSP -> 4 log-wariancje -> LDA.
+
+    Model przewiduje hands/feet; obie transformacje są uczone wewnątrz foldu
+    treningowego. Nie jest to detektor dowolnych intencji ani diagnoza.
+    """
     return make_pipeline(CSP(n_components=4, reg="ledoit_wolf", log=True), LDA())
 
 
@@ -88,6 +93,8 @@ def evaluate(X, y, groups, n_splits=3):
     return dict(
         bal_acc=float(balanced_accuracy_score(y, y_hat)),
         folds=[float(f) for f in folds],
+        balanced_accuracy_mean_folds=float(np.mean(folds)),
+        evaluation_scope="new run of same subject; offline QC estimated before CV",
         confusion=confusion_matrix(y, y_hat).tolist(),
         baseline_bal_acc=float(balanced_accuracy_score(y, base)),
     )
