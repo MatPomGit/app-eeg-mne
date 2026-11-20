@@ -5,16 +5,11 @@
     "002",
     "003",
     "004",
-    "005",
-    "006",
-    "007",
-    "008",
-    "009",
-    "010"
+    "005"
   ],
-  "n_subjects": 10,
-  "n_clean_epochs": 1889,
-  "n_targets": 372,
+  "n_subjects": 5,
+  "n_clean_epochs": 966,
+  "n_targets": 190,
   "epoch_window_s": [
     -0.2,
     0.8
@@ -34,15 +29,15 @@
     1.0,
     30.0
   ],
-  "group_mean_p3_difference_uV": 6.939,
+  "group_mean_p3_difference_uV": 9.206,
   "group_test": {
-    "t": 4.4883908263204955,
-    "df": 9,
-    "p": 0.0015140203581508673,
-    "cohen_dz": 1.4193538040177995,
+    "t": 3.977544324150481,
+    "df": 4,
+    "p": 0.016434776395731265,
+    "cohen_dz": 1.7788118984637868,
     "ci_95_uV": [
-      3.4419306167254833,
-      10.436872905183098
+      2.7798266032176837,
+      15.63144759175213
     ]
   },
   "classifier": {
@@ -50,11 +45,11 @@
     "unit": "V",
     "cv": "GroupKFold (by participant)",
     "folds": 5,
-    "roc_auc_oof": 0.6243842189947619,
-    "balanced_accuracy_oof": 0.5897215075027821,
+    "roc_auc_oof": 0.6661557243624525,
+    "balanced_accuracy_oof": 0.624145415084102,
     "balanced_accuracy_baseline": 0.5,
-    "roc_auc_random_epoch_split": 0.6457496048369377,
-    "permutation_score": 0.6344140109045358,
+    "roc_auc_random_epoch_split": 0.7017227346717309,
+    "permutation_score": 0.7038883303557948,
     "permutation_p": 0.004975124378109453,
     "permutations": 200,
     "permutation_scope": "within participant"
