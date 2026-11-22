@@ -187,7 +187,7 @@ class NotebookConflictMarkerTests(unittest.TestCase):
 
         raw = NOTEBOOK.read_text(encoding="utf-8")
         self.assertIsNone(
-            re.search(r"(?m)^(?:<{7}|={7}|>{7})[^\\n]*$", raw),
+            re.search(r"(?m)^(?:<{7}|={7}|>{7}).*$", raw),
             "Nieusunięte znaczniki konfliktu Git w notatniku Jupyter",
         )
 
