@@ -49,6 +49,11 @@ class P3PdfPublicationTests(unittest.TestCase):
         self.assertNotIn("<strong>Źródło:</strong> {escape(source)}", exporter)
         self.assertNotIn("pdf-report-cover", exporter)
 
+    def test_obsolete_report_pdf_is_not_published(self):
+        self.assertFalse(
+            (NOTEBOOK.parent / "output_P3" / "eeg_P3_ERP_CORE_raport.pdf").exists()
+        )
+
     def test_analysis_code_and_saved_outputs_remain(self):
         self.assertGreaterEqual(len(self.code), 45)
         self.assertGreaterEqual(
