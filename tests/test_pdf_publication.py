@@ -112,6 +112,10 @@ class P3PdfPublicationTests(unittest.TestCase):
             "**Wymagania.** tekst", flags=re.IGNORECASE,
         ))
         self.assertIsNotNone(re.search(
+            definitions["editorial_labels"],
+            "**Wymagana.** tekst", flags=re.IGNORECASE,
+        ))
+        self.assertIsNotNone(re.search(
             definitions["pdf_editorial_labels"],
             "Zakres analizy: opis przykładowy", flags=re.IGNORECASE,
         ))
