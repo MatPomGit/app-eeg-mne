@@ -13,6 +13,7 @@ class SiteParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.ids = set()
+        self.duplicate_ids = set()
         self.links = []
         self.lang = None
         self.tags = []
@@ -21,6 +22,8 @@ class SiteParser(HTMLParser):
         props = dict(attrs)
         self.tags.append(tag)
         if "id" in props:
+            if props["id"] in self.ids:
+                self.duplicate_ids.add(props["id"])
             self.ids.add(props["id"])
         if tag == "html":
             self.lang = props.get("lang")
@@ -64,6 +67,19 @@ class SiteTests(unittest.TestCase):
                 continue
             elif not urlparse(href).scheme:
                 self.assertTrue((SITE / href).is_file(), href)
+
+    def test_unique_nonempty_ids(self):
+        self.assertNotIn("", self.parser.ids)
+        self.assertFalse(self.parser.duplicate_ids, self.parser.duplicate_ids)
+
+    def test_links_reject_unsafe_schemes_and_empty_fragments(self):
+        for href in self.parser.links:
+            with self.subTest(href=href):
+                parsed = urlparse(href)
+                self.assertIn(parsed.scheme.lower(), ("", "https"))
+                self.assertNotEqual(href, "#")
+                if parsed.fragment:
+                    self.assertIn(unquote(parsed.fragment), self.parser.ids)
 
     def test_repository_links_point_to_existing_files(self):
         for href in self.parser.links:
