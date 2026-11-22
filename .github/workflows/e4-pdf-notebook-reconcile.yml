@@ -1,0 +1,51 @@
+name: One-shot E4 PDF notebook main reconciliation
+on:
+  push:
+    branches:
+      - fix/pdf-publication-audience-20261122
+    paths:
+      - .github/workflows/e4-pdf-notebook-reconcile.yml
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    if: github.repository == 'MatPomGit/app-eeg-mne' && github.ref == 'refs/heads/fix/pdf-publication-audience-20261122'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/pdf-publication-audience-20261122
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Merge current main while retaining its newer notebook cells
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "4ce330f577773b50c596d970111c735e26c3208c"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch --no-tags origin main
+          test "$(git rev-parse origin/main)" = "161afe495a428d1ddb84fcced58a3c22688130ed"
+          merge_status=0
+          git merge --no-commit --no-ff origin/main || merge_status=$?
+          if [ "$merge_status" -ne 0 ]; then
+            conflicts="$(git diff --name-only --diff-filter=U)"
+            test "$conflicts" = "notebook/eeg_P3_ERP_1.6.4.ipynb" || {
+              echo "Unexpected merge conflicts: $conflicts"
+              exit 1
+            }
+            git checkout --theirs -- notebook/eeg_P3_ERP_1.6.4.ipynb
+          fi
+          python notebook/sanitize_pdf_publication.py
+          git add -- notebook/eeg_P3_ERP_1.6.4.ipynb
+          python -m unittest discover -s tests -v
+          python -m unittest discover -s notebook/tests -v
+          git diff --cached --check
+          git commit -m 'fix(pdf): reconcile main notebook and stage validated PDF'
+          git push origin HEAD:fix/pdf-publication-audience-20261122
