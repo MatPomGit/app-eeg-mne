@@ -30,6 +30,16 @@ class P3PdfPublicationTests(unittest.TestCase):
             with self.subTest(phrase=forbidden):
                 self.assertNotIn(forbidden, self.markdown)
 
+    def test_no_short_labels_in_notebook_prose(self):
+        import re
+
+        self.assertIsNone(re.search(r"\*\*[^*\n]{2,85}:\*\*", self.markdown))
+        self.assertIsNone(re.search(
+            r"\*\*(?:zakres analizy|zbiór|wymagania|ograniczenia)\.\*\*",
+            self.markdown,
+        ))
+        self.assertNotIn("wnioskowanie grupowa", self.markdown)
+
     def test_pdf_export_excludes_technical_cell_and_absolute_path(self):
         exporters = [
             "".join(c["source"]) for c in self.code
@@ -48,6 +58,9 @@ class P3PdfPublicationTests(unittest.TestCase):
         self.assertIn("ANALIZA EEG · ERP CORE", exporter)
         self.assertNotIn("<strong>Źródło:</strong> {escape(source)}", exporter)
         self.assertNotIn("pdf-report-cover", exporter)
+        self.assertNotIn("<strong>Zakres:</strong>", exporter)
+        self.assertNotIn("<strong>Stan danych:</strong>", exporter)
+        self.assertNotIn("<strong>Data eksportu:</strong>", exporter)
 
     def test_obsolete_report_pdf_is_not_published(self):
         self.assertFalse(
