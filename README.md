@@ -27,6 +27,20 @@ python -m unittest discover -s notebook/tests -v
 
 Testy strukturalne nie zastępują analizy na danych i wizualnej kontroli artefaktów.
 
+## Eksport publikacyjny PDF
+
+Końcowa komórka notatnika P3 tworzy dokument `notebook/output_P3/eeg_P3_ERP_CORE_analiza.pdf`.
+Wersja przeznaczona dla odbiorcy zawiera opis metod, kod obliczeniowy, zachowane wyniki,
+wykresy i ograniczenia interpretacji, ale **nie zawiera instrukcji redakcyjnych,
+szablonów sprawozdań ani kodu samego eksportera**. Osadzony w PDF notatnik jest
+tą samą wersją publikacyjną. Eksport jest wstrzymywany, gdy kontrola tekstu
+wykryje niedozwolone treści.
+
+Istniejący plik o historycznej nazwie `eeg_P3_ERP_CORE_raport.pdf` nie stanowi
+aktualnej publikacji. Aby otrzymać nowy PDF, należy uruchomić aktualną komórkę
+eksportu w notatniku po wykonaniu analizy. Poprawki redakcyjne nie oznaczają
+ponownego obliczenia wyników EEG.
+
 ## Strona internetowa
 
 Prosta, statyczna strona projektu znajduje się w katalogu [site/](site/) (nie w `docs/`). Można ją uruchomić lokalnie:
