@@ -23,7 +23,9 @@ class P3PdfPublicationTests(unittest.TestCase):
         for forbidden in (
             "sprawozdani", "przykładowy opis do raportu",
             "przykładowa konkluzja", "prelegent miał",
-            "zapis raportu pdf wraz",
+            "zapis raportu pdf wraz", "raport", "co robi kod",
+            "co powstaje", "pytanie kontrolne", "co sprawdzić",
+            "zwróć uwagę", "uruchom komórkę", "można napisać",
         ):
             with self.subTest(phrase=forbidden):
                 self.assertNotIn(forbidden, self.markdown)
@@ -37,9 +39,20 @@ class P3PdfPublicationTests(unittest.TestCase):
         exporter = exporters[0]
         self.assertIn("public_notebook.cells", exporter)
         self.assertIn("from_notebook_node(public_notebook)", exporter)
-        self.assertIn("notebook_bytes = nbformat.writes(notebook)", exporter)
+        self.assertIn("notebook_bytes = nbformat.writes(public_notebook)", exporter)
+        self.assertIn("forbidden_publication_phrases", exporter)
+        self.assertIn("publication_markdown", exporter)
+        self.assertIn("page.extract_text()", exporter)
+        self.assertIn("eeg_P3_ERP_CORE_analiza.pdf", exporter)
+        self.assertNotIn("eeg_P3_ERP_CORE_raport.pdf", exporter)
         self.assertIn("ANALIZA EEG · ERP CORE", exporter)
         self.assertNotIn("<strong>Źródło:</strong> {escape(source)}", exporter)
+        self.assertNotIn("pdf-report-cover", exporter)
+
+    def test_obsolete_report_pdf_is_not_published(self):
+        self.assertFalse(
+            (NOTEBOOK.parent / "output_P3" / "eeg_P3_ERP_CORE_raport.pdf").exists()
+        )
 
     def test_analysis_code_and_saved_outputs_remain(self):
         self.assertGreaterEqual(len(self.code), 45)
