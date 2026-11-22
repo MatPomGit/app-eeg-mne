@@ -181,5 +181,16 @@ class P3PdfPublicationTests(unittest.TestCase):
             ast.parse("".join(cell["source"]))
 
 
+class NotebookConflictMarkerTests(unittest.TestCase):
+    def test_notebook_contains_no_git_merge_markers(self):
+        import re
+
+        raw = NOTEBOOK.read_text(encoding="utf-8")
+        self.assertIsNone(
+            re.search(r"(?m)^(?:<{7}|={7}|>{7})[^\\n]*$", raw),
+            "Nieusunięte znaczniki konfliktu Git w notatniku Jupyter",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
