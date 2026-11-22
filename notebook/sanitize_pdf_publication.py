@@ -79,8 +79,8 @@ def polish_exporter(source):
     if "PDF_FILE.unlink(missing_ok=True)" not in source:
         source = source.replace(
             "    notebook, source = _load_current_notebook()",
-            "    notebook, source = _load_current_notebook()\\n"
-            "    PDF_FILE.unlink(missing_ok=True)",
+            "    notebook, source = _load_current_notebook()" + chr(10)
+            + "    PDF_FILE.unlink(missing_ok=True)",
             1,
         )
     source = source.replace(
