@@ -36,8 +36,8 @@ szablonów sprawozdań ani kodu samego eksportera**. Osadzony w PDF notatnik jes
 tą samą wersją publikacyjną. Eksport jest wstrzymywany, gdy kontrola tekstu
 wykryje niedozwolone treści.
 
-Istniejący plik o historycznej nazwie `eeg_P3_ERP_CORE_raport.pdf` nie stanowi
-aktualnej publikacji. Aby otrzymać nowy PDF, należy uruchomić aktualną komórkę
+Historyczny plik `eeg_P3_ERP_CORE_raport.pdf` został wycofany z bieżącego
+drzewa repozytorium ze względu na przestarzałą treść redakcyjną. Aby otrzymać nowy PDF, należy uruchomić aktualną komórkę
 eksportu w notatniku po wykonaniu analizy. Poprawki redakcyjne nie oznaczają
 ponownego obliczenia wyników EEG.
 
