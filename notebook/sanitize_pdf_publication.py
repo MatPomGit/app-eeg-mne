@@ -198,6 +198,12 @@ def clean_notebook(path=NOTEBOOK):
     for cell in document["cells"]:
         source = "".join(cell.get("source", []))
         before = source
+        # Puste komórki bez wyników nie są treścią publikacyjną.
+        # Ich obecność nie powinna przesuwać stabilnych sekcji metodologicznych.
+        if (cell["cell_type"] == "code" and not source.strip()
+                and not cell.get("outputs")):
+            changes += 1
+            continue
         if cell["cell_type"] == "markdown":
             if "## 30. Zapis raportu PDF wraz z notatnikiem źródłowym" in source:
                 changes += 1
