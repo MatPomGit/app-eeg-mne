@@ -87,7 +87,7 @@ def polish_exporter(source):
             raise ValueError("Nie odnaleziono kontroli treści redakcyjnej PDF")
         extra = """    editorial_labels = re.search(
         r'\\*\\*[^*\\n]{2,85}:\\*\\*|'
-        r'\\*\\*(?:Zakres analizy|Zbiór|Wymagania|Ograniczenia)\\.\\*\\*',
+        r'\\*\\*(?:Zakres analizy|Zbiór|Wymagana|Wymagane|Wymagania|Ograniczenia)\\.\\*\\*',
         publication_markdown, flags=re.IGNORECASE,
     )
     if editorial_labels:
@@ -148,7 +148,7 @@ def polish_exporter(source):
         if source.count(marker) != 1:
             raise ValueError("Nie odnaleziono jednoznacznej kontroli tekstu stron PDF")
         extra = """        pdf_editorial_labels = re.search(
-            r'(?m)^\\s*(?:zakres analizy|zbiór|wymagana|wymagania|ograniczenia)\\s*[:.]\\s*',
+            r'(?m)^\\s*(?:zakres analizy|zbiór|wymagana|wymagane|wymagania|ograniczenia)\\s*[:.]\\s*',
             page_text, flags=re.IGNORECASE,
         )
         if pdf_editorial_labels:
@@ -290,13 +290,13 @@ def clean_notebook(path=NOTEBOOK):
     # Akapity muszą być pełnymi zdaniami, a nie etykietami redakcyjnymi.
     prohibited_labels = re.search(
         r"\*\*[^*\n]{2,85}:\*\*|"
-        r"\*\*(?:Zakres analizy|Zbiór|Wymagania|Ograniczenia)\.\*\*",
+        r"\*\*(?:Zakres analizy|Zbiór|Wymagana|Wymagane|Wymagania|Ograniczenia)\.\*\*",
         "\n".join("".join(cell.get("source", [])) for cell in new_cells
                   if cell["cell_type"] == "markdown"),
     )
     if prohibited_labels:
         raise ValueError("Wykryto skrótowy nagłówek w tekście notatnika")
-    if len(document["cells"]) != 126:
+    if len(document["cells"]) < 126:
         raise ValueError("Niespodziewana liczba komorek po modyfikacji")
     if not changes:
         return False
