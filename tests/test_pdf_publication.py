@@ -62,6 +62,22 @@ class P3PdfPublicationTests(unittest.TestCase):
         self.assertNotIn("<strong>Stan danych:</strong>", exporter)
         self.assertNotIn("<strong>Data eksportu:</strong>", exporter)
 
+    def test_sanitizer_strengthens_audience_validation(self):
+        from runpy import run_path
+
+        sanitizer = run_path(str(NOTEBOOK.parent / "sanitize_pdf_publication.py"))
+        exporters = [
+            "".join(c["source"]) for c in self.code
+            if "def export_full_notebook_pdf():" in "".join(c["source"])
+        ]
+        self.assertEqual(len(exporters), 1)
+        polished = sanitizer["polish_exporter"](exporters[0])
+        self.assertIn("editorial_labels = re.search(", polished)
+        self.assertIn("skrótowe etykiety redakcyjne", polished)
+        self.assertIn("PDF_FILE.unlink(missing_ok=True)", polished)
+        self.assertEqual(polished, sanitizer["polish_exporter"](polished))
+        ast.parse(polished)
+
     def test_obsolete_report_pdf_is_not_published(self):
         self.assertFalse(
             (NOTEBOOK.parent / "output_P3" / "eeg_P3_ERP_CORE_raport.pdf").exists()
