@@ -14,6 +14,7 @@ jobs:
     if: github.repository == 'MatPomGit/app-eeg-mne' && github.ref == 'refs/heads/fix/pdf-publication-audience-20261122'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # The sanitizer now drops empty code cells before static methodology checks.
     steps:
       - uses: actions/checkout@v4
         with:
