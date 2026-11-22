@@ -74,10 +74,33 @@ def polish_exporter(source):
     source = source.replace("html_path = work / 'raport.html'",
                             "html_path = work / 'analiza.html'")
     source = source.replace("pdf-report-cover", "pdf-cover")
+    # Usuń wcześniejszy PDF przed walidacją; błędny eksport nie może pozostawić
+    # pliku wyglądającego na aktualną wersję publikacyjną.
+    if "PDF_FILE.unlink(missing_ok=True)" not in source:
+        source = source.replace(
+            "    notebook, source = _load_current_notebook()",
+            "    notebook, source = _load_current_notebook()\\n"
+            "    PDF_FILE.unlink(missing_ok=True)",
+            1,
+        )
     source = source.replace(
         "    # Publikacja nie drukuje kodu eksportera; pozostaje on w zalaczniku.",
         "    # Kod eksportera nie wchodzi do wersji publikacyjnej ani załącznika.",
     )
+    # Kontrola obejmuje również redakcyjne etykiety akapitów.
+    if "editorial_labels = re.search(" not in source:
+        target = "    if contamination:"
+        if target not in source:
+            raise ValueError("Nie odnaleziono kontroli treści redakcyjnej PDF")
+        extra = """    editorial_labels = re.search(
+        r'\\*\\*[^*\\n]{2,85}:\\*\\*|'
+        r'\\*\\*(?:Zakres analizy|Zbiór|Wymagania|Ograniczenia)\\.\\*\\*',
+        publication_markdown, flags=re.IGNORECASE,
+    )
+    if editorial_labels:
+        contamination.append('skrótowe etykiety redakcyjne')
+"""
+        source = source.replace(target, extra + target, 1)
     if "forbidden_publication_phrases =" not in source:
         marker = "    html, _ = exporter.from_notebook_node(public_notebook)"
         if marker not in source:
