@@ -16,7 +16,7 @@
 
 ## Integralność wyników
 
-Dane w `notebook/output_P3/` i zapisane rezultaty w starszym notebooku pochodzą z wykonania **1.6.4**. Zmiana sposobu postępowania przy niezbieżnej ICA może zmienić liczbę odrzuconych epok, średnią P3, wartość testu i parametry modelu. **Nie przenosimy liczb z 1.6.4 do 1.6.5.** Wyczyszczono wyjścia komórek 62 i późniejszych oraz komórki z montażem; pozostałe wcześniejsze wizualizacje poglądowe pozostawiono. Konieczny jest nowy przebieg wszystkich komórek na danych źródłowych.
+Dane w `notebook/output_P3/` i zapisane rezultaty w starszym notebooku pochodzą z wykonania **1.6.4**. Zmiana sposobu postępowania przy niezbieżnej ICA może zmienić liczbę odrzuconych epok, średnią P3, wartość testu i parametry modelu. **Nie przenosimy liczb z 1.6.4 do 1.6.5.** Zachowano wszystkie historyczne wyjścia komórek, w tym wizualizację montażu i wyniki analizy, bez przepisywania ich na metryki wersji 1.6.5. Zapisane wyjścia i liczniki uruchomień dokumentują poprzednie wykonanie i nie stanowią walidacji kodu po zmianach. Konieczny jest nowy przebieg wszystkich komórek na danych źródłowych.
 
 Testy statyczne sprawdzają strukturę i kontrakty kodu, nie weryfikują wyników empirycznych. Szczególnie potrzebna jest inspekcja wybranych komponentów EOG i udziału epok odrzuconych w obu warunkach.
 

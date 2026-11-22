@@ -74,13 +74,18 @@ class P3Methodology(unittest.TestCase):
         self.assertIn('"roc_auc_pooled_oof_exploratory"', export)
         self.assertIn('"pipeline_version": "1.6.5"', export)
 
-    def test_no_old_results_after_method_changes(self):
-        self.assertFalse(self.nb["cells"][31].get("outputs"))
-        for i, cell in enumerate(self.nb["cells"][62:], 62):
-            if cell["cell_type"] == "code":
-                with self.subTest(cell=i):
-                    self.assertFalse(cell.get("outputs"))
-                    self.assertIsNone(cell.get("execution_count"))
+    def test_historical_outputs_preserved_and_documented(self):
+        # Historical figures are archived, not validated empirical results for 1.6.5.
+        self.assertTrue(self.nb["cells"][31].get("outputs"))
+        self.assertTrue(any(
+            cell["cell_type"] == "code" and cell.get("outputs")
+            for cell in self.nb["cells"][62:]
+        ))
+        readme = (NOTEBOOK.parents[1] / "README.md").read_text(encoding="utf-8")
+        changelog = (NOTEBOOK.parent / "CHANGELOG.md").read_text(encoding="utf-8")
+        self.assertIn("historyczne wyjścia komórek", readme)
+        self.assertIn("wyniki wykonania 1.6.4", readme)
+        self.assertIn("nie stanowią walidacji", changelog)
 
 
 if __name__ == "__main__":
