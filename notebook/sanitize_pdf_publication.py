@@ -11,22 +11,22 @@ NOTEBOOK = Path(__file__).with_name("eeg_P3_ERP_1.6.4.ipynb")
 
 # Wyłącznie opis naukowy przeznaczony dla czytelnika. Wyniki i kod pozostają nietknięte.
 PUBLICATION_REWRITES = (
-    ("**Co robi kod w kolejnej komórce:**", "**Procedura obliczeniowa:**"),
-    ("**Co robi kod:**", "**Procedura obliczeniowa:**"),
-    ("**Co powstaje:**", "**Wynik:**"),
-    ("**Jak czytać:**", "**Interpretacja:**"),
-    ("**Co sprawdzić:**", "**Zakres kontroli:**"),
+    ("**Co robi kod w kolejnej komórce:**", "Kod "),
+    ("**Co robi kod:**", "Kod "),
+    ("**Co powstaje:**", "Powstaje "),
+    ("**Jak czytać:**", ""),
+    ("**Co sprawdzić:**", "Należy sprawdzić, czy "),
     ("**Pytanie kontrolne:** ilu uczestników wczytano, a ilu z tych uczestników ma wystarczającą liczbę poprawnych epok w obu warunkach?",
-     "**Kontrola liczebności próby:** liczba wczytanych uczestników oraz liczba osób z wystarczającą liczbą poprawnych epok w obu warunkach określają zakres możliwych analiz."),
+     "Liczba wczytanych uczestników oraz liczba osób z wystarczającą liczbą poprawnych epok w obu warunkach określają zakres możliwych analiz."),
     ("**Pułapka:** przerwane pobieranie. Uruchom komórkę ponownie: gotowe pliki zostaną pominięte, a uszkodzone wykryje suma MD5.",
-     "**Odporność na przerwanie transferu:** przy ponownym pobieraniu poprawne pliki są pomijane, a uszkodzone identyfikowane na podstawie sum MD5."),
-    ("**Co widać?**", "**Obserwacja:**"),
+     "Przy ponownym pobieraniu poprawne pliki są pomijane, a uszkodzone identyfikowane na podstawie sum MD5."),
+    ("**Co widać?**", ""),
     ("Zwróć uwagę na ewentualny szczyt **50/60 Hz** (sieć) i na wysoką moc poniżej 1 Hz (dryf).",
      "Ewentualny szczyt **50/60 Hz** wskazuje na zakłócenia sieciowe, a duża moc poniżej 1 Hz może wskazywać na dryf."),
     ("W macierzy pomyłek sprawdź osobno, jak model radzi sobie z celami (rzadka klasa).",
      "Macierz pomyłek umożliwia osobną ocenę klasyfikacji celów, stanowiących rzadszą klasę."),
     ("**Nie traktuj wyniku jako ogólnej skuteczności:** to kilka osób.",
-     "**Ograniczenie uogólnienia:** wynik dotyczy niewielkiej liczby uczestników."),
+     "Wynik dotyczy niewielkiej liczby uczestników."),
     ("### Instrukcja interpretacji testu grupowego", "### Interpretacja testu grupowego"),
     ("### Jak przedstawić wynik walidacji?", "### Interpretacja wyniku walidacji"),
     ("### Jak poprawnie zapisać nowy eksperyment w BIDS?", "### Zapis nowego eksperymentu zgodnie z BIDS"),
@@ -44,9 +44,9 @@ PUBLICATION_REWRITES = (
     ("Jeżeli wzorzec i mapa ERP mają podobny układ przestrzenny, można napisać, że **informacja wykorzystywana przez model wykazuje podobieństwo do rozkładu efektu ERP**.",
      "Podobieństwo układu przestrzennego wzorca i mapy ERP oznacza, że **informacja wykorzystywana przez model wykazuje podobieństwo do rozkładu efektu ERP**."),
     ("**Jak przejść od tabeli do wniosku:** najpierw sprawdź retencję i zbieżność ICA, potem policz / odczytaj różnicę P3 każdej osoby, następnie jej rozkład i oszacowanie grupowe z CI. Wynik klasyfikatora podaj **osobno**;",
-     "**Synteza wyników:** ocenę rozpoczyna retencja epok i zbieżność ICA, następnie analizowana jest różnica P3 na poziomie poszczególnych osób, rozkład tych różnic i wynik grupowy z przedziałem ufności. Wyniki klasyfikatora są przedstawiane **oddzielnie**;"),
+     "Ocenę rozpoczyna retencja epok i zbieżność ICA, następnie analizowana jest różnica P3 na poziomie poszczególnych osób, rozkład tych różnic i wynik grupowy z przedziałem ufności. Wyniki klasyfikatora są przedstawiane **oddzielnie**;"),
     ("**Co wykonuje notatnik po uruchomieniu:** pobraliśmy dane BIDS, przygotowaliśmy sygnał",
-     "**Zakres analizy:** pobrano dane BIDS, przygotowano sygnał"),
+     "Pobrano dane BIDS, przygotowano sygnał"),
     ("wyznaczyliśmy P3 na Pz w oknie ustalonym a priori, przetestowaliśmy go na poziomie uczestników i zdekodowaliśmy warunki z walidacją według uczestników, porównaniem z podziałem losowym i testem permutacyjnym.",
      "wyznaczono P3 na Pz w oknie ustalonym a priori, porównano warunki na poziomie uczestników i oceniono dekodowanie z walidacją międzyosobniczą, podziałem losowym oraz testem permutacyjnym."),
 )
@@ -62,6 +62,7 @@ FORBIDDEN_PUBLICATION_PHRASES = (
 def polish_markdown(source):
     for before, after in PUBLICATION_REWRITES:
         source = source.replace(before, after)
+    source = re.sub(r"(?m)(?<=Kod )([A-ZĄĆĘŁŃÓŚŹŻ])", lambda m: m.group(1).lower(), source)
     return source
 
 
@@ -161,7 +162,7 @@ def clean_notebook(path=NOTEBOOK):
             )
             source = source.replace(
                 "**Raportowanie źródła danych:** opis metody powinien zawierać nazwę i źródło zbioru, liczebność próby oraz kryteria wykluczenia. Brak pobranych danych uniemożliwia przedstawienie wyników empirycznych.",
-                "**Pochodzenie i zakres danych:** zbiór ERP CORE ma udokumentowane źródło i strukturę BIDS. Liczebność próby oraz kryteria wykluczenia wynikają z przebiegu analizy. Brak pobranych danych uniemożliwia przedstawienie wyników empirycznych.",
+                "Zbiór ERP CORE ma udokumentowane źródło i strukturę BIDS. Liczebność próby oraz kryteria wykluczenia wynikają z przebiegu analizy. Brak pobranych danych uniemożliwia przedstawienie wyników empirycznych.",
             )
             source = source.replace(
                 "**Zawsze raportuj próg i liczbę odrzuconych epok.**",
@@ -169,7 +170,7 @@ def clean_notebook(path=NOTEBOOK):
             )
             source = source.replace(
                 "**Przykład opisowy (nie wynik ERP CORE):** jeśli zachowano 700 z 1000 epok, odsetek zachowanych epok wynosi 70%. Raportujemy zarówno 700, jak i 30% odrzuceń, zamiast pisać jedynie „dane oczyszczono”.",
-                "**Przykład obliczeniowy (nie wynik ERP CORE):** zachowanie 700 z 1000 epok oznacza 70% retencji i 30% odrzuceń. Sam odsetek nie potwierdza poprawności pomiaru.",
+                "W hipotetycznym przykładzie zachowanie 700 z 1000 epok oznacza 70% retencji i 30% odrzuceń. Sam odsetek nie potwierdza poprawności pomiaru.",
             )
             source = source.replace(
                 "| V | eksport, ograniczenia, zadania, bibliografia |",
@@ -225,6 +226,15 @@ def clean_notebook(path=NOTEBOOK):
     for forbidden in FORBIDDEN_PUBLICATION_PHRASES:
         if forbidden in prose:
             raise ValueError("Znaleziono niedozwolona tresc redakcyjna: " + forbidden)
+    # Akapity muszą być pełnymi zdaniami, a nie etykietami redakcyjnymi.
+    prohibited_labels = re.search(
+        r"\*\*[^*\n]{2,85}:\*\*|"
+        r"\*\*(?:Zakres analizy|Zbiór|Wymagania|Ograniczenia)\.\*\*",
+        "\n".join("".join(cell.get("source", [])) for cell in new_cells
+                  if cell["cell_type"] == "markdown"),
+    )
+    if prohibited_labels:
+        raise ValueError("Wykryto skrótowy nagłówek w tekście notatnika")
     if len(document["cells"]) != 126:
         raise ValueError("Niespodziewana liczba komorek po modyfikacji")
     if not changes:
