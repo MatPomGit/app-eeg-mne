@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "4ce330f577773b50c596d970111c735e26c3208c"
+          git merge-base --is-ancestor "4ce330f577773b50c596d970111c735e26c3208c" HEAD
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git fetch --no-tags origin main
