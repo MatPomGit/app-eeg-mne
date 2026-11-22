@@ -74,15 +74,8 @@ def polish_exporter(source):
     source = source.replace("html_path = work / 'raport.html'",
                             "html_path = work / 'analiza.html'")
     source = source.replace("pdf-report-cover", "pdf-cover")
-    # Usuń wcześniejszy PDF przed walidacją; błędny eksport nie może pozostawić
-    # pliku wyglądającego na aktualną wersję publikacyjną.
-    if "PDF_FILE.unlink(missing_ok=True)" not in source:
-        source = source.replace(
-            "    notebook, source = _load_current_notebook()",
-            "    notebook, source = _load_current_notebook()" + chr(10)
-            + "    PDF_FILE.unlink(missing_ok=True)",
-            1,
-        )
+    # Nie usuwaj poprzedniego poprawnego dokumentu po błędzie eksportu.
+    source = source.replace("    PDF_FILE.unlink(missing_ok=True)\n", "")
     source = source.replace(
         "    # Publikacja nie drukuje kodu eksportera; pozostaje on w zalaczniku.",
         "    # Kod eksportera nie wchodzi do wersji publikacyjnej ani załącznika.",
@@ -149,6 +142,51 @@ def polish_exporter(source):
         "    # Powstaje samowystarczalny plik PDF: zawiera drukowany raport i źródło.",
         "    # PDF zawiera analizę i jej odtwarzalny kod źródłowy.",
     )
+    # Sprawdź również etykiety w tekstowej warstwie PDF.
+    if "pdf_editorial_labels = re.search(" not in source:
+        marker = "        if found:"
+        if source.count(marker) != 1:
+            raise ValueError("Nie odnaleziono jednoznacznej kontroli tekstu stron PDF")
+        extra = """        pdf_editorial_labels = re.search(
+            r'(?m)^\\s*(?:zakres analizy|zbiór|wymagana|wymagania|ograniczenia)\\s*[:.]\\s*',
+            page_text, flags=re.IGNORECASE,
+        )
+        if pdf_editorial_labels:
+            found.append('skrótowa etykieta redakcyjna')
+"""
+        source = source.replace(marker, extra + marker, 1)
+
+    # Publikacja zachowuje stary PDF aż do weryfikacji nowego wraz z załącznikiem.
+    if "with TemporaryDirectory(prefix='eeg-p3-publication-'," not in source:
+        start_marker = "    if sys.platform == 'win32':\n        # W Windows WeasyPrint"
+        end_marker = "    print('Zapisano dokument:', PDF_FILE.resolve())"
+        if source.count(start_marker) != 1 or source.count(end_marker) != 1:
+            raise ValueError("Nie odnaleziono granic kodu publikacji PDF")
+        start = source.index(start_marker)
+        end = source.index(end_marker, start)
+        block = source[start:end]
+        for required in (
+            "writer.write(str(temp_pdf))",
+            "verified = PdfReader(str(PDF_FILE))",
+            "if not PDF_FILE.is_file()",
+        ):
+            if required not in block:
+                raise ValueError("Brak kontroli przed publikacją: " + required)
+        block = block.replace("PDF_FILE", "staged_pdf")
+        block = "".join(
+            "    " + line if line.strip() else line
+            for line in block.splitlines(keepends=True)
+        )
+        prefix = (
+            "    # Poprzedni PDF pozostaje dostępny, jeśli eksport zawiedzie.\n"
+            "    with TemporaryDirectory(prefix='eeg-p3-publication-', dir=PDF_FILE.parent) as stage_dir:\n"
+            "        staged_pdf = Path(stage_dir) / PDF_FILE.name\n"
+        )
+        source = (
+            source[:start] + prefix + block
+            + "        staged_pdf.replace(PDF_FILE)\n"
+            + source[end:]
+        )
     return source
 
 
